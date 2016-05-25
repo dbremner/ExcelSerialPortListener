@@ -38,10 +38,7 @@ namespace ExcelSerialPortListener {
         /// <param name="callingWkbkName"></param>
         /// <returns>Excel.Workbook</returns>
         public Excel.Workbook WorkbookByName(string callingWkbkName) {
-            var processes = new List<Process>();
-            processes.AddRange(Process.GetProcessesByName("excel"));
-
-            foreach (var p in processes) {
+            foreach (var p in Process.GetProcessesByName("excel")) {
                 var winHandle = p.MainWindowHandle;
                 //Console.WriteLine($"winHandle = {winHandle}");
                 // We need to enumerate the child windows to find one that
