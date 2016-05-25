@@ -9,7 +9,7 @@ namespace ExcelSerialPortListener {
         public string Parity { get; set; }
         public string DataBits { get; set; }
         public string StopBits { get; set; }
-        public SerialPort CommPort = new SerialPort();
+        public SerialPort CommPort { get; } = new SerialPort();
         public bool IsOpen => CommPort.IsOpen;
         //public string Response { get; set; } = string.Empty;
 
