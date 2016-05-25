@@ -4,11 +4,11 @@ using System.Threading;
 
 namespace ExcelSerialPortListener {
     public class CommChannel {
-        public string PortName { get; set; }
-        public string BaudRate { get; set; }
-        public string Parity { get; set; }
-        public string DataBits { get; set; }
-        public string StopBits { get; set; }
+        public string PortName { get; }
+        public string BaudRate { get; }
+        public string Parity { get; }
+        public string DataBits { get; }
+        public string StopBits { get; }
         public SerialPort CommPort { get; } = new SerialPort();
         public bool IsOpen => CommPort.IsOpen;
         //public string Response { get; set; } = string.Empty;
