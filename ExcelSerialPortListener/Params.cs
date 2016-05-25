@@ -13,6 +13,8 @@ namespace ExcelSerialPortListener {
         public string Baudrate { get; }
 
         public Params(string[] parameters) {
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+            if (parameters.Length != 5) throw new ArgumentException("Need 5 arguments:", nameof(parameters));
             WorkbookName = parameters[0];
             WorksheetName = parameters[1];
             RangeName = parameters[2];

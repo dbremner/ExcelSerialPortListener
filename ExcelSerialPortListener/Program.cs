@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace ExcelSerialPortListener {
     class Program {
@@ -9,6 +10,12 @@ namespace ExcelSerialPortListener {
         private static bool CommsAreOpen { get; set; }
 
         static void Main(string[] args) {
+            if (args.Length != 5)
+            {
+                MessageBox.Show("Expected 5 arguments: WkbookName, WkSheetName, Range, CommPort, BaudRate",
+                    nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             var parameters = new Params(args);
             // args: WkbookName, WkSheetName, Range, CommPort, BaudRate
 
@@ -62,6 +69,7 @@ namespace ExcelSerialPortListener {
         }
 
         private static string OnlyDigits(string s) {
+            if (s == null) throw new ArgumentNullException(nameof(s));
             var onlyDigits = s.Trim();
             var indexOfSpaceG = onlyDigits.IndexOf(" g");
             if (indexOfSpaceG > 0)

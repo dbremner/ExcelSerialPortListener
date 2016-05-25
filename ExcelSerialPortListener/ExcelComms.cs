@@ -23,6 +23,9 @@ namespace ExcelSerialPortListener {
         public delegate bool EnumChildCallback(int hwnd, ref int lParam);
 
         public ExcelComms(string wkBookName, string wkSheetName, string rngName) {
+            if (wkBookName == null) throw new ArgumentNullException(nameof(wkBookName));
+            if (wkSheetName == null) throw new ArgumentNullException(nameof(wkSheetName));
+            if (rngName == null) throw new ArgumentNullException(nameof(rngName));
             WkBook = WorkbookByName(wkBookName);
             WkSheetName = wkSheetName;
             RngName = rngName;
@@ -38,6 +41,7 @@ namespace ExcelSerialPortListener {
         /// <param name="callingWkbkName"></param>
         /// <returns>Excel.Workbook</returns>
         public Excel.Workbook WorkbookByName(string callingWkbkName) {
+            if (callingWkbkName == null) throw new ArgumentNullException(nameof(callingWkbkName));
             foreach (var p in Process.GetProcessesByName("excel")) {
                 var winHandle = p.MainWindowHandle;
                 //Console.WriteLine($"winHandle = {winHandle}");
@@ -84,6 +88,7 @@ namespace ExcelSerialPortListener {
         }
 
         public bool WriteValueToWks(string valueToWrite) {
+            if (valueToWrite == null) throw new ArgumentNullException(nameof(valueToWrite));
             if (WkBook == null) return false;
             try {
                 WkBook.Worksheets[WkSheetName].Range[RngName].Value = valueToWrite;
