@@ -101,8 +101,8 @@ namespace ExcelSerialPortListener {
         }
 
         public static bool EnumChildProc(IntPtr hwndChild, ref IntPtr lParam) {
-            var buf = new StringBuilder(128);
-            GetClassName(hwndChild, buf, 128);
+            var buf = new StringBuilder(256);
+            GetClassName(hwndChild, buf, buf.MaxCapacity);
             if (buf.ToString() == "EXCEL7") {
                 lParam = hwndChild;
                 return false;
