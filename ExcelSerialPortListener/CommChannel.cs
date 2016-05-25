@@ -36,7 +36,7 @@ namespace ExcelSerialPortListener {
             //CommPort.Handshake = Handshake.None;
             //CommPort.RtsEnable = true;
             // add listener event handler
-            CommPort.DataReceived += new SerialDataReceivedEventHandler(SerialDeviceDataReceivedHandler);
+            CommPort.DataReceived += SerialDeviceDataReceivedHandler;
         }
 
         public void ClosePort() {
