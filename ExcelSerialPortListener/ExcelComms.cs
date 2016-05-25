@@ -38,11 +38,11 @@ namespace ExcelSerialPortListener {
         /// <param name="callingWkbkName"></param>
         /// <returns>Excel.Workbook</returns>
         public Excel.Workbook WorkbookByName(string callingWkbkName) {
-            List<Process> processes = new List<Process>();
+            var processes = new List<Process>();
             processes.AddRange(Process.GetProcessesByName("excel"));
 
-            foreach (Process p in processes) {
-                int winHandle = (int)p.MainWindowHandle;
+            foreach (var p in processes) {
+                var winHandle = p.MainWindowHandle;
                 //Console.WriteLine($"winHandle = {winHandle}");
                 // We need to enumerate the child windows to find one that
                 // supports accessibility. To do this, instantiate the
@@ -61,7 +61,7 @@ namespace ExcelSerialPortListener {
                     //Console.WriteLine($"hwndChild = {hwndChild}");
                     if (hwndChild != 0) {
                         const uint OBJID_NATIVEOM = 0xFFFFFFF0;
-                        Guid IID_IDispatch = new Guid("{00020400-0000-0000-C000-000000000046}");
+                        var IID_IDispatch = new Guid("{00020400-0000-0000-C000-000000000046}");
 
                         Excel.Window ptr = null;
                         int hr = AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, IID_IDispatch.ToByteArray(), out ptr);
@@ -71,7 +71,7 @@ namespace ExcelSerialPortListener {
                             // IDispatch pointer, we can QI this for
                             // an Excel Application (using the implicit
                             // cast operator supplied in the PIA).
-                            Excel.Application app = ptr.Application;
+                            var app = ptr.Application;
                             foreach (Excel.Workbook wkbk in app.Workbooks) {
                                 if (wkbk.Name == callingWkbkName) {
                                     //Console.WriteLine($"Workbook name = {wkbk.Name}");
@@ -99,7 +99,7 @@ namespace ExcelSerialPortListener {
         }
 
         public static bool EnumChildProc(int hwndChild, ref int lParam) {
-            StringBuilder buf = new StringBuilder(128);
+            var buf = new StringBuilder(128);
             GetClassName(hwndChild, buf, 128);
             if (buf.ToString() == "EXCEL7") {
                 lParam = hwndChild;

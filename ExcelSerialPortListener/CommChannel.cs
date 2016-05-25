@@ -90,7 +90,7 @@ namespace ExcelSerialPortListener {
         //}
 
         private void SerialDeviceDataReceivedHandler(object sender, SerialDataReceivedEventArgs e) {
-            SerialPort sp = (SerialPort)sender;
+            var sp = (SerialPort)sender;
             Program.Response = sp.ReadExisting();
             Console.WriteLine($"Received Response: {Program.Response}");
         }

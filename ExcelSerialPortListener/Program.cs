@@ -9,7 +9,7 @@ namespace ExcelSerialPortListener {
         private static bool CommsAreOpen { get; set; }
 
         static void Main(string[] args) {
-            Params parameters = new Params(args);
+            var parameters = new Params(args);
             // args: WkbookName, WkSheetName, Range, CommPort, BaudRate
 
             ScaleComms = new CommChannel(parameters.CommPort, parameters.Baudrate);
@@ -30,7 +30,7 @@ namespace ExcelSerialPortListener {
                     } 
                 }
 
-                ExcelComms excel = new ExcelComms(parameters.WorkbookName, parameters.WorksheetName, parameters.RangeName);
+                var excel = new ExcelComms(parameters.WorkbookName, parameters.WorksheetName, parameters.RangeName);
                 excel.WriteValueToWks(Response);
             }
 
