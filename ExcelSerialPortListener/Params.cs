@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ExcelSerialPortListener {
-    public struct Params {
+    public class Params {
         public string WorkbookName { get; }
         public string WorksheetName { get; }
         public string RangeName { get; }
