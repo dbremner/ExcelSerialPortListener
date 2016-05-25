@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace ExcelSerialPortListener {
     public struct Params {
-        public string WorkbookName, WorksheetName, RangeName;
-        public string CommPort, Baudrate;
+        public string WorkbookName;
+        public string WorksheetName;
+        public string RangeName;
+        public string CommPort;
+        public string Baudrate;
 
         public Params(string[] parameters) {
             WorkbookName = parameters[0];
