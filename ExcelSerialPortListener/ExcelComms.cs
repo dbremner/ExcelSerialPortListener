@@ -52,8 +52,7 @@ namespace ExcelSerialPortListener {
                 // EnumChildWindows, passing the delegate as the 2nd arg.
                 if (winHandle != IntPtr.Zero) {
                     var hwndChild = IntPtr.Zero;
-                    var cb = new EnumChildCallback(EnumChildProc);
-                    EnumChildWindows(winHandle, cb, ref hwndChild);
+                    EnumChildWindows(winHandle, EnumChildProc, ref hwndChild);
 
                     // If we found an accessible child window, call
                     // AccessibleObjectFromWindow, passing the constant
