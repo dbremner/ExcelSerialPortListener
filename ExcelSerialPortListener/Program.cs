@@ -48,8 +48,7 @@ namespace ExcelSerialPortListener {
             do {
                 if (Console.ReadKey(true).Key == ConsoleKey.Spacebar) {
                     Console.WriteLine("Saw pressed key!");
-                    const string printCmd = "P\r";
-                    ScaleComms.WriteData(printCmd);
+                    ScaleComms.WriteData("P\r");
                 }
             } while (true);
         }
