@@ -12,7 +12,7 @@ namespace ExcelSerialPortListener {
         public string RngName { get; }
 
         [DllImport("Oleacc.dll")]
-        static extern int AccessibleObjectFromWindow(IntPtr hwnd, uint dwObjectID, ref Guid iid, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref object ppvObject);
+        static extern int AccessibleObjectFromWindow(IntPtr hwnd, uint dwObjectID, ref Guid iid, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref Excel.Window ppvObject);
 
         [DllImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
