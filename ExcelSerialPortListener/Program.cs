@@ -15,8 +15,10 @@ namespace ExcelSerialPortListener {
                     nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            var parameters = new Params(args);
             // args: WorkbookName, WorkSheetName, Range
+            string workbookName = args[0];
+            string worksheetName = args[1];
+            string rangeName = args[2];
 
             ScaleComms = new CommChannel();
 
@@ -36,7 +38,7 @@ namespace ExcelSerialPortListener {
                     } 
                 }
 
-                var excel = new ExcelComms(parameters.WorkbookName, parameters.WorksheetName, parameters.RangeName);
+                var excel = new ExcelComms(workbookName, worksheetName, rangeName);
                 excel.TryWriteStringToWorksheet(Response);
             }
 
