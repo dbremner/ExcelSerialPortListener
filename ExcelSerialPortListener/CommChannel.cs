@@ -12,7 +12,7 @@ namespace ExcelSerialPortListener {
     //=== Constructor(s) ===
 
         public CommChannel() {
-            CommPort = new SerialPort() {
+            CommPort = new SerialPort {
                 PortName = Settings.Default.PortName,
                 BaudRate = Settings.Default.BaudRate,
                 DataBits = Settings.Default.DataBits,
