@@ -7,7 +7,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
     public class ExcelComms {
-        private Excel.Workbook WorkBook { get; }
+        private readonly Excel.Workbook WorkBook;
         public string WorkSheetName { get; }
         public string RangeName { get; }
 
