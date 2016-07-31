@@ -11,17 +11,19 @@ namespace ExcelSerialPortListener {
         public string WkSheetName { get; }
         public string RngName { get; }
 
-        [DllImport("Oleacc.dll")]
-        static extern int AccessibleObjectFromWindow(IntPtr hwnd, uint dwObjectID, ref Guid iid, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref Excel.Window ppvObject);
+        private static class NativeMethods {
+            [DllImport("Oleacc.dll")]
+            internal static extern int AccessibleObjectFromWindow(IntPtr hwnd, uint dwObjectID, ref Guid iid, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref Excel.Window ppvObject);
 
-        [DllImport("User32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool EnumChildWindows(IntPtr hWndParent, EnumChildCallback lpEnumFunc, ref IntPtr lParam);
+            [DllImport("User32.dll")]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            internal static extern bool EnumChildWindows(IntPtr hWndParent, EnumChildCallback lpEnumFunc, ref IntPtr lParam);
 
-        [DllImport("User32.dll", CharSet = CharSet.Unicode)]
-        public static extern int GetClassName( IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+            [DllImport("User32.dll", CharSet = CharSet.Unicode)]
+            internal static extern int GetClassName( IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
 
-        public delegate bool EnumChildCallback(IntPtr hwnd, ref IntPtr lParam);
+            internal delegate bool EnumChildCallback(IntPtr hwnd, ref IntPtr lParam);
+        }
 
         public ExcelComms(string wkBookName, string wkSheetName, string rngName) {
             if (wkBookName == null) throw new ArgumentNullException(nameof(wkBookName));
@@ -52,7 +54,7 @@ namespace ExcelSerialPortListener {
                 // EnumChildWindows, passing the delegate as the 2nd arg.
                 if (winHandle != IntPtr.Zero) {
                     var hwndChild = IntPtr.Zero;
-                    EnumChildWindows(winHandle, EnumChildProc, ref hwndChild);
+                    NativeMethods.EnumChildWindows(winHandle, EnumChildProc, ref hwndChild);
 
                     // If we found an accessible child window, call
                     // AccessibleObjectFromWindow, passing the constant
@@ -65,7 +67,7 @@ namespace ExcelSerialPortListener {
                         var IID_IDispatch = new Guid("{00020400-0000-0000-C000-000000000046}");
 
                         Excel.Window ptr = null;
-                        int hr = AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, ref ptr);
+                        int hr = NativeMethods.AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, ref ptr);
                         //Console.WriteLine($"hr ptr = {hr}");
                         if (hr >= 0) {
                             // If we successfully got a native OM
@@ -101,7 +103,7 @@ namespace ExcelSerialPortListener {
 
         public static bool EnumChildProc(IntPtr hwndChild, ref IntPtr lParam) {
             var buf = new StringBuilder(256);
-            GetClassName(hwndChild, buf, buf.MaxCapacity);
+            NativeMethods.GetClassName(hwndChild, buf, buf.MaxCapacity);
             if (buf.ToString() == "EXCEL7") {
                 lParam = hwndChild;
                 return false;
