@@ -4,12 +4,7 @@ using System.Threading;
 
 namespace ExcelSerialPortListener {
     public class CommChannel {
-        public string PortName { get; }
-        public string BaudRate { get; }
-        public string Parity { get; }
-        public string DataBits { get; }
-        public string StopBits { get; }
-        public SerialPort CommPort { get; } = new SerialPort();
+        private SerialPort CommPort { get; }
         public bool IsOpen => CommPort.IsOpen;
         //public string Response { get; set; } = string.Empty;
 
@@ -21,29 +16,22 @@ namespace ExcelSerialPortListener {
 
         private CommChannel(string portName = "COM3", string baudRate = "19200", 
                            string dataBits = "8", string stopBits = "One", string parity = "None") {
-            PortName = portName;
-            BaudRate = baudRate;
-            DataBits = dataBits;
-            StopBits = stopBits;        //None, One, OnePointFive, Two
-            Parity = parity;            //Even, Mark, None, Odd, Space
-            ConfigurePort();
-        }
-
-        // === Methods ===
-        private void ConfigurePort() {
+            CommPort = new SerialPort() {
+                PortName = portName,
+                BaudRate = int.Parse(baudRate),
+                DataBits = int.Parse(dataBits),
+                StopBits = (StopBits)Enum.Parse(typeof(StopBits), stopBits, ignoreCase: true),        //None, One, OnePointFive, Two
+                Parity = (Parity)Enum.Parse(typeof(Parity), parity, ignoreCase: true),            //Even, Mark, None, Odd, Space
+                ReceivedBytesThreshold = 11,
+                //Handshake = Handshake.None;
+                //RtsEnable = true;
+            };
             if(CommPort.IsOpen) CommPort.Close();
-            CommPort.PortName = PortName;
-            CommPort.BaudRate = int.Parse(BaudRate);
-            CommPort.DataBits = int.Parse(DataBits);
-            CommPort.StopBits = (StopBits)Enum.Parse(typeof(StopBits), StopBits, ignoreCase: true);
-            CommPort.Parity = (Parity)Enum.Parse(typeof(Parity), Parity, ignoreCase: true);
-            CommPort.ReceivedBytesThreshold = 11;
-            //CommPort.Handshake = Handshake.None;
-            //CommPort.RtsEnable = true;
             // add listener event handler
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
         }
 
+        // === Methods ===
         public void ClosePort() {
             if (IsOpen) CommPort.Close();
         }
