@@ -7,9 +7,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
     public class ExcelComms {
-        private Excel.Workbook WkBook { get; }
-        public string WkSheetName { get; }
-        public string RngName { get; }
+        private Excel.Workbook WorkBook { get; }
+        public string WorkSheetName { get; }
+        public string RangeName { get; }
 
         private static class NativeMethods {
             [DllImport("Oleacc.dll")]
@@ -25,13 +25,13 @@ namespace ExcelSerialPortListener {
             internal delegate bool EnumChildCallback(IntPtr hwnd, ref IntPtr lParam);
         }
 
-        public ExcelComms(string wkBookName, string wkSheetName, string rngName) {
-            if (wkBookName == null) throw new ArgumentNullException(nameof(wkBookName));
-            if (wkSheetName == null) throw new ArgumentNullException(nameof(wkSheetName));
-            if (rngName == null) throw new ArgumentNullException(nameof(rngName));
-            WkBook = WorkbookByName(wkBookName);
-            WkSheetName = wkSheetName;
-            RngName = rngName;
+        public ExcelComms(string workBookName, string workSheetName, string rangeName) {
+            if (workBookName == null) throw new ArgumentNullException(nameof(workBookName));
+            if (workSheetName == null) throw new ArgumentNullException(nameof(workSheetName));
+            if (rangeName == null) throw new ArgumentNullException(nameof(rangeName));
+            WorkBook = WorkbookByName(workBookName);
+            WorkSheetName = workSheetName;
+            RangeName = rangeName;
         }
 
         /// <summary>
@@ -92,11 +92,11 @@ namespace ExcelSerialPortListener {
         public bool TryWriteStringToWorksheet(string valueToWrite) {
             if (valueToWrite == null) throw new ArgumentNullException(nameof(valueToWrite));
             try {
-                WkBook.Worksheets[WkSheetName].Range[RngName].Value = valueToWrite;
+                WorkBook.Worksheets[WorkSheetName].Range[RangeName].Value = valueToWrite;
                 return true;
             }
             catch (Exception) {
-                //Console.WriteLine($"Failed to write value to Excel spreadsheet {WkBook?.Name}.{WkSheetName}.{RngName}, {e.Message}");
+                //Console.WriteLine($"Failed to write value to Excel spreadsheet {WorkBook?.Name}.{WorkSheetName}.{RangeName}, {e.Message}");
                 return false;
             }
         }

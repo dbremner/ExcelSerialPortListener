@@ -12,12 +12,12 @@ namespace ExcelSerialPortListener {
         static void Main(string[] args) {
             if (args.Length != 5)
             {
-                MessageBox.Show("Expected 5 arguments: WkbookName, WkSheetName, Range, CommPort, BaudRate",
+                MessageBox.Show("Expected 5 arguments: WorkbookName, WorkSheetName, Range, CommPort, BaudRate",
                     nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             var parameters = new Params(args);
-            // args: WkbookName, WkSheetName, Range, CommPort, BaudRate
+            // args: WorkbookName, WorkSheetName, Range, CommPort, BaudRate
 
             ScaleComms = new CommChannel(parameters.CommPort, parameters.Baudrate);
 
