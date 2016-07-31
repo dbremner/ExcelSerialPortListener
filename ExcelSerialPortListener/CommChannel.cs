@@ -59,6 +59,7 @@ namespace ExcelSerialPortListener {
         //}
 
         public void WriteData(string dataString) {
+            if (dataString == null) throw new ArgumentNullException(nameof(dataString));
             Console.WriteLine("got Print command.");
             if (!IsOpen)
                 CommPort.Open();
@@ -79,6 +80,7 @@ namespace ExcelSerialPortListener {
         //}
 
         private void SerialDeviceDataReceivedHandler(object sender, SerialDataReceivedEventArgs e) {
+            if (sender == null) throw new ArgumentNullException(nameof(sender));
             var sp = (SerialPort)sender;
             Program.Response = sp.ReadExisting();
             Console.WriteLine($"Received Response: {Program.Response}");
