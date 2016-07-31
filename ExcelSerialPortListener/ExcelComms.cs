@@ -89,7 +89,6 @@ namespace ExcelSerialPortListener {
 
         public bool WriteValueToWks(string valueToWrite) {
             if (valueToWrite == null) throw new ArgumentNullException(nameof(valueToWrite));
-            if (WkBook == null) return false;
             try {
                 WkBook.Worksheets[WkSheetName].Range[RngName].Value = valueToWrite;
                 return true;
