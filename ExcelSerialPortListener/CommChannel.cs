@@ -63,7 +63,7 @@ namespace ExcelSerialPortListener {
         //}
 
         public void WriteData(string dataString) {
-            Console.WriteLine($"got Print command.");
+            Console.WriteLine("got Print command.");
             if (!IsOpen)
                 CommPort.Open();
             CommPort.Write(dataString);
