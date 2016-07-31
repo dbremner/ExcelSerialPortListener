@@ -9,17 +9,13 @@ namespace ExcelSerialPortListener {
         public string WorkbookName { get; }
         public string WorksheetName { get; }
         public string RangeName { get; }
-        public string CommPort { get; }
-        public string Baudrate { get; }
 
         public Params(string[] parameters) {
             if (parameters == null) throw new ArgumentNullException(nameof(parameters));
-            if (parameters.Length != 5) throw new ArgumentException("Need 5 arguments:", nameof(parameters));
+            if (parameters.Length != 3) throw new ArgumentException("Need 3 arguments:", nameof(parameters));
             WorkbookName = parameters[0];
             WorksheetName = parameters[1];
             RangeName = parameters[2];
-            CommPort = parameters[3];
-            Baudrate = parameters[4];
         }
     }
 }

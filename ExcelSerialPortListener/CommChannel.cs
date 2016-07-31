@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO.Ports;
 using System.Threading;
+using ExcelSerialPortListener.Properties;
 
 namespace ExcelSerialPortListener {
     public class CommChannel {
@@ -10,19 +11,14 @@ namespace ExcelSerialPortListener {
 
     //=== Constructor(s) ===
 
-        public CommChannel(string portName, string baudRate) :
-            this(portName, baudRate, "8")
-        { }
-
-        private CommChannel(string portName = "COM3", string baudRate = "19200", 
-                           string dataBits = "8", string stopBits = "One", string parity = "None") {
+        public CommChannel() {
             CommPort = new SerialPort() {
-                PortName = portName,
-                BaudRate = int.Parse(baudRate),
-                DataBits = int.Parse(dataBits),
-                StopBits = (StopBits)Enum.Parse(typeof(StopBits), stopBits, ignoreCase: true),        //None, One, OnePointFive, Two
-                Parity = (Parity)Enum.Parse(typeof(Parity), parity, ignoreCase: true),            //Even, Mark, None, Odd, Space
-                ReceivedBytesThreshold = 11,
+                PortName = Settings.Default.PortName,
+                BaudRate = Settings.Default.BaudRate,
+                DataBits = Settings.Default.DataBits,
+                StopBits = Settings.Default.StopBits,        //None, One, OnePointFive, Two
+                Parity = Settings.Default.Parity,            //Even, Mark, None, Odd, Space
+                ReceivedBytesThreshold = Settings.Default.ReceivedBytesThreshold,
                 //Handshake = Handshake.None;
                 //RtsEnable = true;
             };

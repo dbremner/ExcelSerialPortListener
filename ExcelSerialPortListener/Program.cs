@@ -10,16 +10,15 @@ namespace ExcelSerialPortListener {
         private static bool CommsAreOpen { get; set; }
 
         static void Main(string[] args) {
-            if (args.Length != 5)
-            {
-                MessageBox.Show("Expected 5 arguments: WorkbookName, WorkSheetName, Range, CommPort, BaudRate",
+            if (args.Length != 3) {
+                MessageBox.Show("Expected 3 arguments: WorkbookName, WorkSheetName, Range",
                     nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             var parameters = new Params(args);
-            // args: WorkbookName, WorkSheetName, Range, CommPort, BaudRate
+            // args: WorkbookName, WorkSheetName, Range
 
-            ScaleComms = new CommChannel(parameters.CommPort, parameters.Baudrate);
+            ScaleComms = new CommChannel();
 
             CommsAreOpen = ScaleComms.OpenPort();
             if (CommsAreOpen) {
