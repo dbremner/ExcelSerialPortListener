@@ -32,8 +32,8 @@ namespace ExcelSerialPortListener {
 
                 while (true) {
                     if (_gotResponse) {
-                        mainThread?.Abort();
-                        consoleKeyListener?.Abort();
+                        mainThread.Abort();
+                        consoleKeyListener.Abort();
                         break;
                     } 
                 }
