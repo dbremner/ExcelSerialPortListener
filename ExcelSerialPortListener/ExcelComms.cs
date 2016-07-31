@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Text;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -29,9 +30,17 @@ namespace ExcelSerialPortListener {
             if (workBookName == null) throw new ArgumentNullException(nameof(workBookName));
             if (workSheetName == null) throw new ArgumentNullException(nameof(workSheetName));
             if (rangeName == null) throw new ArgumentNullException(nameof(rangeName));
+            Contract.EndContractBlock();
             WorkBook = WorkbookByName(workBookName);
             WorkSheetName = workSheetName;
             RangeName = rangeName;
+        }
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant() {
+            Contract.Invariant(WorkBook != null);
+            Contract.Invariant(WorkSheetName != null);
+            Contract.Invariant(RangeName != null);
         }
 
         /// <summary>
@@ -45,6 +54,7 @@ namespace ExcelSerialPortListener {
         /// <returns>Excel.Workbook</returns>
         public Excel.Workbook WorkbookByName(string callingWkbkName) {
             if (callingWkbkName == null) throw new ArgumentNullException(nameof(callingWkbkName));
+            Contract.EndContractBlock();
             foreach (var p in Process.GetProcessesByName("excel")) {
                 var winHandle = p.MainWindowHandle;
                 //Console.WriteLine($"winHandle = {winHandle}");
@@ -91,6 +101,7 @@ namespace ExcelSerialPortListener {
 
         public bool TryWriteStringToWorksheet(string valueToWrite) {
             if (valueToWrite == null) throw new ArgumentNullException(nameof(valueToWrite));
+            Contract.EndContractBlock();
             try {
                 WorkBook.Worksheets[WorkSheetName].Range[RangeName].Value = valueToWrite;
                 return true;

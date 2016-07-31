@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.IO.Ports;
 using System.Threading;
 using ExcelSerialPortListener.Properties;
@@ -25,6 +26,11 @@ namespace ExcelSerialPortListener {
             if(CommPort.IsOpen) CommPort.Close();
             // add listener event handler
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
+        }
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant() {
+            Contract.Invariant(CommPort != null);
         }
 
         // === Methods ===
@@ -60,6 +66,7 @@ namespace ExcelSerialPortListener {
 
         public void WriteData(string dataString) {
             if (dataString == null) throw new ArgumentNullException(nameof(dataString));
+            Contract.EndContractBlock();
             Console.WriteLine("got Print command.");
             if (!IsOpen)
                 CommPort.Open();
@@ -81,6 +88,7 @@ namespace ExcelSerialPortListener {
 
         private void SerialDeviceDataReceivedHandler(object sender, SerialDataReceivedEventArgs e) {
             if (sender == null) throw new ArgumentNullException(nameof(sender));
+            Contract.EndContractBlock();
             var sp = (SerialPort)sender;
             Program.Response = sp.ReadExisting();
             Console.WriteLine($"Received Response: {Program.Response}");

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -55,6 +56,7 @@ namespace ExcelSerialPortListener {
         }
 
         public static void ListenToScale(double timeOutInSeconds = 30) {
+            Contract.Requires(Response != null);
             var timeOut = DateTime.Now.AddSeconds(timeOutInSeconds);
             var isTimedOut = false;
             do {
@@ -70,6 +72,7 @@ namespace ExcelSerialPortListener {
 
         private static string OnlyDigits(string s) {
             if (s == null) throw new ArgumentNullException(nameof(s));
+            Contract.EndContractBlock();
             var onlyDigits = s.Trim();
             var indexOfSpaceG = onlyDigits.IndexOf(" g");
             if (indexOfSpaceG > 0)
