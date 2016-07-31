@@ -38,7 +38,7 @@ namespace ExcelSerialPortListener {
                 }
 
                 var excel = new ExcelComms(parameters.WorkbookName, parameters.WorksheetName, parameters.RangeName);
-                excel.WriteValueToWks(Response);
+                excel.TryWriteStringToWorksheet(Response);
             }
 
             ScaleComms.ClosePort();
