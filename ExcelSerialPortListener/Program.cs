@@ -47,6 +47,7 @@ namespace ExcelSerialPortListener {
         }
 
         public static void ListenerKeyBoardEvent() {
+            Contract.Requires(ScaleComms != null);
             do {
                 if (Console.ReadKey(true).Key == ConsoleKey.Spacebar) {
                     Console.WriteLine("Saw pressed key!");

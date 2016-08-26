@@ -113,6 +113,7 @@ namespace ExcelSerialPortListener {
         }
 
         public static bool EnumChildProc(IntPtr hwndChild, ref IntPtr lParam) {
+            Contract.Requires(hwndChild != IntPtr.Zero);
             var buf = new StringBuilder(256);
             NativeMethods.GetClassName(hwndChild, buf, buf.MaxCapacity);
             if (buf.ToString() == "EXCEL7") {
