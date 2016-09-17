@@ -91,7 +91,7 @@ namespace ExcelSerialPortListener {
             Contract.EndContractBlock();
             var sp = (SerialPort)sender;
             Program.Response = sp.ReadExisting();
-            Console.WriteLine($"Received Response: {Program.Response}");
+            Console.WriteLine("Received Response: {0}", Program.Response);
         }
     }
 }
