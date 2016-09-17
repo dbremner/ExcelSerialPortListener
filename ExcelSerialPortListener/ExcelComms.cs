@@ -22,9 +22,6 @@ namespace ExcelSerialPortListener {
             [return: MarshalAs(UnmanagedType.Bool)]
             internal static extern bool EnumChildWindows(IntPtr hWndParent, [MarshalAs(UnmanagedType.FunctionPtr)]EnumChildCallback lpEnumFunc, ref IntPtr lParam);
 
-            [DllImport("User32.dll", CharSet = CharSet.Unicode, EntryPoint = "GetClassNameW", ExactSpelling = true)]
-            internal static extern int GetClassName( IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
-
             [return: MarshalAs(UnmanagedType.Bool)]
             internal delegate bool EnumChildCallback(IntPtr hwnd, ref IntPtr lParam);
         }
@@ -117,9 +114,8 @@ namespace ExcelSerialPortListener {
 
         public static bool EnumChildProc(IntPtr hwndChild, ref IntPtr lParam) {
             Contract.Requires(hwndChild != IntPtr.Zero);
-            var buf = new StringBuilder(256);
-            NativeMethods.GetClassName(hwndChild, buf, buf.MaxCapacity);
-            if (buf.ToString() == "EXCEL7") {
+            var className = PInvoke.User32.GetClassName(hwndChild);
+            if (className == "EXCEL7") {
                 lParam = hwndChild;
                 return false;
             }
