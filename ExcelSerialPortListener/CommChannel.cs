@@ -5,7 +5,7 @@ using System.Threading;
 using ExcelSerialPortListener.Properties;
 
 namespace ExcelSerialPortListener {
-    public class CommChannel {
+    public sealed class CommChannel {
         private readonly SerialPort CommPort;
         public bool IsOpen => CommPort.IsOpen;
         //public string Response { get; set; } = string.Empty;

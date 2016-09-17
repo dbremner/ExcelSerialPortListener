@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
-    public class ExcelComms {
+    public sealed class ExcelComms {
         private readonly Excel.Workbook _workBook;
         public string WorkSheetName { get; }
         public string RangeName { get; }
