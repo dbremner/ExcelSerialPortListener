@@ -56,6 +56,7 @@ namespace ExcelSerialPortListener {
             if (callingWkbkName == null) throw new ArgumentNullException(nameof(callingWkbkName));
             Contract.EndContractBlock();
             foreach (var p in Process.GetProcessesByName("excel")) {
+                Contract.Assume(p != null);
                 var winHandle = p.MainWindowHandle;
                 //Console.WriteLine($"winHandle = {winHandle}");
                 // We need to enumerate the child windows to find one that
@@ -84,6 +85,7 @@ namespace ExcelSerialPortListener {
                             // IDispatch pointer, we can QI this for
                             // an Excel Application (using the implicit
                             // cast operator supplied in the PIA).
+                            Contract.Assume(ptr != null);
                             var app = ptr.Application;
                             foreach (Excel.Workbook wkbk in app.Workbooks) {
                                 if (wkbk.Name == callingWkbkName) {
@@ -101,6 +103,8 @@ namespace ExcelSerialPortListener {
 
         public bool TryWriteStringToWorksheet(string valueToWrite) {
             if (valueToWrite == null) throw new ArgumentNullException(nameof(valueToWrite));
+            Contract.Requires(WorkBook != null);
+            Contract.Requires(WorkBook.Worksheets != null);
             Contract.EndContractBlock();
             try {
                 WorkBook.Worksheets[WorkSheetName].Range[RangeName].Value = valueToWrite;
