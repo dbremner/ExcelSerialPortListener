@@ -6,6 +6,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows.Forms;
+using PInvoke;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
@@ -96,9 +97,9 @@ namespace ExcelSerialPortListener {
                         var IID_IDispatch = new Guid("{00020400-0000-0000-C000-000000000046}");
 
                         Excel.Window ptr = null;
-                        int hr = NativeMethods.AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, ref ptr);
+                        HResult hr = NativeMethods.AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, ref ptr);
                         //Console.WriteLine($"hr ptr = {hr}");
-                        if (hr >= 0) {
+                        if (hr.Succeeded) {
                             // If we successfully got a native OM
                             // IDispatch pointer, we can QI this for
                             // an Excel Application (using the implicit
