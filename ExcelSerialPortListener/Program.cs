@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Windows.Forms;
@@ -16,6 +17,13 @@ namespace ExcelSerialPortListener {
                     nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            if (Process.GetProcessesByName("excel").Length == 0) {
+                MessageBox.Show("Excel is not running, please open Excel with the appropriate spreadsheet.",
+                    nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             // args: WorkbookName, WorkSheetName, Range
             string workbookName = args[0];
             string worksheetName = args[1];

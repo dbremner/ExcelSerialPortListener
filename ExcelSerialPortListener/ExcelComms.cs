@@ -5,13 +5,19 @@ using System.Diagnostics.Contracts;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
     public class ExcelComms {
-        private readonly Excel.Workbook WorkBook;
+        private readonly Excel.Workbook _workBook;
         public string WorkSheetName { get; }
         public string RangeName { get; }
+
+        public Excel.Workbook WorkBook
+        {
+            get { return _workBook; }
+        }
 
         [SuppressUnmanagedCodeSecurity]
         private static class NativeMethods {
@@ -31,7 +37,13 @@ namespace ExcelSerialPortListener {
             if (workSheetName == null) throw new ArgumentNullException(nameof(workSheetName));
             if (rangeName == null) throw new ArgumentNullException(nameof(rangeName));
             Contract.EndContractBlock();
-            WorkBook = WorkbookByName(workBookName);
+
+            bool found = TryFindWorkbookByName(workBookName, out _workBook);
+            if (!found) {
+                MessageBox.Show("Excel is not running or requested spreadsheet is not open, exiting now",
+                    nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Environment.Exit(1);
+            }
             WorkSheetName = workSheetName;
             RangeName = rangeName;
         }
@@ -52,10 +64,16 @@ namespace ExcelSerialPortListener {
         /// </summary>
         /// <param name="callingWkbkName"></param>
         /// <returns>Excel.Workbook</returns>
-        public Excel.Workbook WorkbookByName(string callingWkbkName) {
+        public bool TryFindWorkbookByName(string callingWkbkName, out Excel.Workbook target) {
             if (callingWkbkName == null) throw new ArgumentNullException(nameof(callingWkbkName));
             Contract.EndContractBlock();
-            foreach (var p in Process.GetProcessesByName("excel")) {
+            var excelInstances = Process.GetProcessesByName("excel");
+            if (excelInstances.Length == 0) {
+                target = null;
+                return false;
+            }
+
+            foreach (var p in excelInstances) {
                 Contract.Assume(p != null);
                 var winHandle = p.MainWindowHandle;
                 //Console.WriteLine($"winHandle = {winHandle}");
@@ -90,7 +108,8 @@ namespace ExcelSerialPortListener {
                             foreach (Excel.Workbook wkbk in app.Workbooks) {
                                 if (wkbk.Name == callingWkbkName) {
                                     //Console.WriteLine($"Workbook name = {wkbk.Name}");
-                                    return wkbk;
+                                    target = wkbk;
+                                    return true;
                                 }
                             }
                         }
@@ -98,7 +117,8 @@ namespace ExcelSerialPortListener {
                 }
             }
             //Console.WriteLine($"Failed to find Workbook named '{callingWkbkName}'");
-            return null;
+            target = null;
+            return false;
         }
 
         public bool TryWriteStringToWorksheet(string valueToWrite) {
