@@ -11,6 +11,7 @@ namespace ExcelSerialPortListener {
         private static CommChannel ScaleComms { get; set; }
         private static bool CommsAreOpen { get; set; }
 
+        [STAThread]
         static void Main(string[] args) {
             if (args.Length != 3) {
                 MessageBox.Show("Expected 3 arguments: WorkbookName, WorkSheetName, Range",
