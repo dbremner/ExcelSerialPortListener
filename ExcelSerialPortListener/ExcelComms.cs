@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Text;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Windows.Forms;
 using PInvoke;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
-    public sealed class ExcelComms {
+    public sealed partial class ExcelComms {
         private readonly Excel.Workbook _workBook;
         private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
         private Guid IID_IDispatch = new Guid(iidDispatchGuid);
@@ -20,19 +18,6 @@ namespace ExcelSerialPortListener {
         public Excel.Workbook WorkBook
         {
             get { return _workBook; }
-        }
-
-        [SuppressUnmanagedCodeSecurity]
-        private static class NativeMethods {
-            [DllImport("Oleacc.dll", EntryPoint = "AccessibleObjectFromWindow", ExactSpelling = true)]
-            internal static extern int AccessibleObjectFromWindow(IntPtr hwnd, uint dwObjectID, [In] ref Guid iid, [In, Out, MarshalAs(UnmanagedType.IUnknown)] ref Excel.Window ppvObject);
-
-            [DllImport("User32.dll", EntryPoint = "EnumChildWindows", ExactSpelling = true)]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            internal static extern bool EnumChildWindows(IntPtr hWndParent, [MarshalAs(UnmanagedType.FunctionPtr)]EnumChildCallback lpEnumFunc, ref IntPtr lParam);
-
-            [return: MarshalAs(UnmanagedType.Bool)]
-            internal delegate bool EnumChildCallback(IntPtr hwnd, ref IntPtr lParam);
         }
 
         public ExcelComms(string workBookName, string workSheetName, string rangeName) {
