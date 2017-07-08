@@ -12,6 +12,8 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace ExcelSerialPortListener {
     public sealed class ExcelComms {
         private readonly Excel.Workbook _workBook;
+        private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
+        private Guid IID_IDispatch = new Guid(iidDispatchGuid);
         public string WorkSheetName { get; }
         public string RangeName { get; }
 
@@ -95,7 +97,6 @@ namespace ExcelSerialPortListener {
                     //Console.WriteLine($"hwndChild = {hwndChild}");
                     if (hwndChild != IntPtr.Zero) {
                         const uint OBJID_NATIVEOM = 0xFFFFFFF0;
-                        var IID_IDispatch = new Guid("{00020400-0000-0000-C000-000000000046}");
 
                         Excel.Window ptr = null;
                         HResult hr = NativeMethods.AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, ref ptr);
