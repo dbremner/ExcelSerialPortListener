@@ -5,14 +5,14 @@ using System.Threading;
 using System.Windows.Forms;
 
 namespace ExcelSerialPortListener {
-    class Program {
+    internal class Program {
         public static string Response { get; set; } = string.Empty;
-        static bool _gotResponse;
+        private static bool _gotResponse;
         private static CommChannel ScaleComms { get; set; }
         private static bool CommsAreOpen { get; set; }
 
         [STAThread]
-        static void Main(string[] args) {
+        private static void Main(string[] args) {
             if (args.Length != 3) {
                 MessageBox.Show("Expected 3 arguments: WorkbookName, WorkSheetName, Range",
                     nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
