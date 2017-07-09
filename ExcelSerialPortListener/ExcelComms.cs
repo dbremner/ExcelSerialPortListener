@@ -48,7 +48,7 @@ namespace ExcelSerialPortListener {
         private bool TryFindWorkbookByName([NotNull] string callingWkbkName, out Excel.Workbook target) {
             Requires.NotNullOrWhiteSpace(callingWkbkName, nameof(callingWkbkName));
 
-            IReadOnlyList<Process> excelInstances = Process.GetProcessesByName("excel");
+            var excelInstances = Utilities.GetExcelInstances();
             if (excelInstances.Count == 0) {
                 target = null;
                 return false;

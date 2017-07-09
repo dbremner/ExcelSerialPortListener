@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
@@ -21,7 +20,8 @@ namespace ExcelSerialPortListener {
                 return;
             }
 
-            if (Process.GetProcessesByName("excel").Length == 0) {
+            var instances = Utilities.GetExcelInstances();
+            if (instances.Count == 0) {
                 ErrorMessage("Excel is not running, please open Excel with the appropriate spreadsheet.");
                 return;
             }
