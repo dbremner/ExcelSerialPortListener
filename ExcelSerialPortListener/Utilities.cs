@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace ExcelSerialPortListener {
     internal static class Utilities {
+        private const string ProcessName = "excel";
+
         internal static IReadOnlyList<Process> GetExcelInstances() {
-            return Process.GetProcessesByName("excel");
+            return Process.GetProcessesByName(ProcessName);
         }
     }
 }
