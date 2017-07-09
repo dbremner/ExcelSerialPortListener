@@ -12,8 +12,6 @@ namespace ExcelSerialPortListener {
 
         private bool IsOpen => CommPort.IsOpen;
 
-    //=== Constructor(s) ===
-
         public CommChannel() {
             CommPort = new SerialPort {
                 PortName = Settings.Default.PortName,
@@ -28,11 +26,9 @@ namespace ExcelSerialPortListener {
             if(CommPort.IsOpen) {
                 CommPort.Close();
             }
-            // add listener event handler
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
         }
 
-        // === Methods ===
         internal void ClosePort() {
             if (IsOpen) {
                 CommPort.Close();
