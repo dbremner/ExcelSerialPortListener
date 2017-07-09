@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Threading;
-using System.Windows.Forms;
 using JetBrains.Annotations;
 using Validation;
 using static System.StringComparison;
@@ -16,13 +15,13 @@ namespace ExcelSerialPortListener {
         [STAThread]
         private static void Main([ItemNotNull] string[] args) {
             if (args.Length != 3) {
-                ErrorMessage("Expected 3 arguments: WorkbookName, WorkSheetName, Range");
+                Utilities.ErrorMessage("Expected 3 arguments: WorkbookName, WorkSheetName, Range");
                 return;
             }
 
             var instances = Utilities.GetExcelInstances();
             if (instances.Count == 0) {
-                ErrorMessage("Excel is not running, please open Excel with the appropriate spreadsheet.");
+                Utilities.ErrorMessage("Excel is not running, please open Excel with the appropriate spreadsheet.");
                 return;
             }
 
@@ -49,12 +48,6 @@ namespace ExcelSerialPortListener {
             }
 
             ScaleComms.ClosePort();
-        }
-
-        private static void ErrorMessage([NotNull] string message) {
-            Requires.NotNullOrWhiteSpace(message, nameof(message));
-
-            MessageBox.Show(message, nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private static void ListenerKeyBoardEvent() {
