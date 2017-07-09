@@ -14,6 +14,7 @@ namespace ExcelSerialPortListener {
         private readonly Excel.Workbook _workBook;
         private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
         private Guid IID_IDispatch = new Guid(iidDispatchGuid);
+        private ChildWindowFinder childWindowFinder = new ChildWindowFinder(EnumChildProc);
 
         [NotNull]
         private string WorkSheetName { get; }
@@ -58,7 +59,6 @@ namespace ExcelSerialPortListener {
                 if (winHandle == IntPtr.Zero) {
                     continue;
                 }
-                var childWindowFinder = new ChildWindowFinder(EnumChildProc);
                 if (!childWindowFinder.TryFindChildWindow(winHandle, out var hwndChild)) {
                     continue;
                 }
