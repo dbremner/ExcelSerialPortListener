@@ -71,8 +71,8 @@ namespace ExcelSerialPortListener {
             }
 
             Contract.EndContractBlock();
-            var excelInstances = Process.GetProcessesByName("excel");
-            if (excelInstances.Length == 0) {
+            IReadOnlyList<Process> excelInstances = Process.GetProcessesByName("excel");
+            if (excelInstances.Count == 0) {
                 target = null;
                 return false;
             }
