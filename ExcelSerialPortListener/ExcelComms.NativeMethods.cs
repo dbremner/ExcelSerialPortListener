@@ -10,11 +10,6 @@ namespace ExcelSerialPortListener
         internal static class NativeMethods {
             [DllImport("Oleacc.dll", EntryPoint = "AccessibleObjectFromWindow", ExactSpelling = true)]
             internal static extern int AccessibleObjectFromWindow(IntPtr hwnd, uint dwObjectID, [In] ref Guid iid, [Out, MarshalAs(UnmanagedType.IUnknown)] out Excel.Window ppvObject);
-
-            [DllImport("User32.dll", EntryPoint = "EnumChildWindows", ExactSpelling = true)]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            internal static extern bool EnumChildWindows(IntPtr hWndParent, [MarshalAs(UnmanagedType.FunctionPtr)]ChildWindowCallback lpEnumFunc, ref IntPtr lParam);
-
         }
     }
 }
