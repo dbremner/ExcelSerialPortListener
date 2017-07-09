@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Validation;
 using static ExcelSerialPortListener.Utilities;
 using Excel = Microsoft.Office.Interop.Excel;
+// ReSharper disable HeapView.ObjectAllocation.Possible
 
 namespace ExcelSerialPortListener {
     internal sealed partial class ExcelComms {

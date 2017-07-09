@@ -5,6 +5,7 @@ using System.Threading;
 using ExcelSerialPortListener.Properties;
 using JetBrains.Annotations;
 using Validation;
+// ReSharper disable HeapView.ClosureAllocation
 
 namespace ExcelSerialPortListener {
     internal sealed class CommChannel : IDisposable {
