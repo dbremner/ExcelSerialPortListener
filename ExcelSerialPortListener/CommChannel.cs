@@ -3,10 +3,11 @@ using System.Diagnostics.Contracts;
 using System.IO.Ports;
 using System.Threading;
 using ExcelSerialPortListener.Properties;
+using JetBrains.Annotations;
 
 namespace ExcelSerialPortListener {
     public sealed class CommChannel {
-        private readonly SerialPort CommPort;
+        [NotNull] private readonly SerialPort CommPort;
         public bool IsOpen => CommPort.IsOpen;
         //public string Response { get; set; } = string.Empty;
 
@@ -64,7 +65,7 @@ namespace ExcelSerialPortListener {
         //    }
         //}
 
-        public void WriteData(string dataString) {
+        public void WriteData([NotNull] string dataString) {
             if (dataString == null) throw new ArgumentNullException(nameof(dataString));
             Contract.EndContractBlock();
             Console.WriteLine("got Print command.");
@@ -86,7 +87,7 @@ namespace ExcelSerialPortListener {
         //    }
         //}
 
-        private void SerialDeviceDataReceivedHandler(object sender, SerialDataReceivedEventArgs e) {
+        private void SerialDeviceDataReceivedHandler([NotNull] object sender, [NotNull] SerialDataReceivedEventArgs e) {
             if (sender == null) throw new ArgumentNullException(nameof(sender));
             Contract.EndContractBlock();
             var sp = (SerialPort)sender;

@@ -3,16 +3,18 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Threading;
 using System.Windows.Forms;
+using JetBrains.Annotations;
 
 namespace ExcelSerialPortListener {
     internal class Program {
+        [NotNull]
         public static string Response { get; set; } = string.Empty;
         private static bool _gotResponse;
         private static CommChannel ScaleComms { get; set; }
         private static bool CommsAreOpen { get; set; }
 
         [STAThread]
-        private static void Main(string[] args) {
+        private static void Main([ItemNotNull] string[] args) {
             if (args.Length != 3) {
                 MessageBox.Show("Expected 3 arguments: WorkbookName, WorkSheetName, Range",
                     nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -80,7 +82,7 @@ namespace ExcelSerialPortListener {
             _gotResponse = true;
         }
 
-        private static string OnlyDigits(string s) {
+        private static string OnlyDigits([NotNull] string s) {
             if (s == null) throw new ArgumentNullException(nameof(s));
             Contract.EndContractBlock();
             var onlyDigits = s.Trim();

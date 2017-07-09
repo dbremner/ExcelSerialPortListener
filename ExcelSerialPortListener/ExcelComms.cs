@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Text;
 using System.Windows.Forms;
+using JetBrains.Annotations;
 using PInvoke;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -12,7 +13,11 @@ namespace ExcelSerialPortListener {
         private readonly Excel.Workbook _workBook;
         private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
         private Guid IID_IDispatch = new Guid(iidDispatchGuid);
+
+        [NotNull]
         public string WorkSheetName { get; }
+
+        [NotNull]
         public string RangeName { get; }
 
         public Excel.Workbook WorkBook
@@ -20,7 +25,7 @@ namespace ExcelSerialPortListener {
             get { return _workBook; }
         }
 
-        public ExcelComms(string workBookName, string workSheetName, string rangeName) {
+        public ExcelComms([NotNull] string workBookName, [NotNull] string workSheetName, [NotNull] string rangeName) {
             if (String.IsNullOrWhiteSpace(workBookName)) throw new ArgumentNullException(nameof(workBookName));
             if (String.IsNullOrWhiteSpace(workSheetName)) throw new ArgumentNullException(nameof(workSheetName));
             if (String.IsNullOrWhiteSpace(rangeName)) throw new ArgumentNullException(nameof(rangeName));
@@ -53,7 +58,7 @@ namespace ExcelSerialPortListener {
         /// <param name="callingWkbkName"></param>
         /// <param name="target"></param>
         /// <returns>Excel.Workbook</returns>
-        public bool TryFindWorkbookByName(string callingWkbkName, out Excel.Workbook target) {
+        public bool TryFindWorkbookByName([NotNull] string callingWkbkName, out Excel.Workbook target) {
             if (String.IsNullOrWhiteSpace(callingWkbkName)) throw new ArgumentNullException(nameof(callingWkbkName));
             Contract.EndContractBlock();
             var excelInstances = Process.GetProcessesByName("excel");
@@ -117,7 +122,7 @@ namespace ExcelSerialPortListener {
             return childWindow != IntPtr.Zero;
         }
 
-        public bool TryWriteStringToWorksheet(string valueToWrite) {
+        public bool TryWriteStringToWorksheet([NotNull] string valueToWrite) {
             if (String.IsNullOrWhiteSpace(valueToWrite)) throw new ArgumentNullException(nameof(valueToWrite));
             Contract.Requires(WorkBook != null);
             Contract.Requires(WorkBook.Worksheets != null);
