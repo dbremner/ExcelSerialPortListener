@@ -63,7 +63,7 @@ namespace ExcelSerialPortListener {
                     continue;
                 }
                 //Console.WriteLine($"hwndChild = {hwndChild}");
-                var childWindowFinder = new ChildWindowFinder(winHandle, null);
+                var childWindowFinder = new ChildWindowFinder(winHandle, EnumChildProc);
                 if (!childWindowFinder.TryFindChildWindow(out var hwndChild)) {
                     continue;
                 }
@@ -87,6 +87,17 @@ namespace ExcelSerialPortListener {
             //Console.WriteLine($"Failed to find Workbook named '{callingWkbkName}'");
             target = null;
             return false;
+        }
+
+        private static bool EnumChildProc(IntPtr child, ref IntPtr lParam)
+        {
+            var className = PInvoke.User32.GetClassName(child);
+            if (className == "EXCEL7")
+            {
+                lParam = child;
+                return false;
+            }
+            return true;
         }
 
         private bool TryGetExcelWindow(IntPtr hwndChild, out Excel.Window ptr) {

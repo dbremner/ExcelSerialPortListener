@@ -34,19 +34,7 @@ namespace ExcelSerialPortListener
             // supports accessibility.
             childWindow = IntPtr.Zero;
             if (mainWindow != IntPtr.Zero) {
-
-                bool EnumChildProc(IntPtr child, ref IntPtr lParam)
-                {
-                    var className = PInvoke.User32.GetClassName(child);
-                    if (className == "EXCEL7")
-                    {
-                        lParam = child;
-                        return false;
-                    }
-                    return true;
-                }
-
-                NativeMethods.EnumChildWindows(mainWindow, EnumChildProc, ref childWindow);
+                NativeMethods.EnumChildWindows(mainWindow, callback, ref childWindow);
             }
             return childWindow != IntPtr.Zero;
         }
