@@ -84,6 +84,7 @@ namespace ExcelSerialPortListener {
             _gotResponse = true;
         }
 
+        [Pure]
         private static string OnlyDigits([NotNull] string s) {
             Requires.NotNull(s, nameof(s));
 
