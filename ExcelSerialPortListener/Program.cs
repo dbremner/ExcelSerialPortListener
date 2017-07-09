@@ -17,13 +17,11 @@ namespace ExcelSerialPortListener {
         private static void Main([ItemNotNull] string[] args) {
             if (args.Length != 3) {
                 ErrorMessage("Expected 3 arguments: WorkbookName, WorkSheetName, Range");
-                Environment.Exit(1);
             }
 
             var instances = GetExcelInstances();
             if (instances.Count == 0) {
                 ErrorMessage("Excel is not running, please open Excel with the appropriate spreadsheet.");
-                Environment.Exit(1);
             }
 
             var (workbookName, worksheetName, rangeName) = (args[0], args[1], args[2]);

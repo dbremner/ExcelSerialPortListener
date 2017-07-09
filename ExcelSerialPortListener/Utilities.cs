@@ -21,6 +21,7 @@ namespace ExcelSerialPortListener {
             Requires.NotNullOrWhiteSpace(message, nameof(message));
 
             MessageBox.Show(message, nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            Environment.Exit(1);
         }
     }
 }
