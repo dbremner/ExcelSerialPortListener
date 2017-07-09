@@ -17,6 +17,7 @@ namespace ExcelSerialPortListener {
             return Process.GetProcessesByName(ProcessName);
         }
 
+        [ContractAnnotation("=> halt")]
         internal static void ErrorMessage([NotNull] string message) {
             Requires.NotNullOrWhiteSpace(message, nameof(message));
 
