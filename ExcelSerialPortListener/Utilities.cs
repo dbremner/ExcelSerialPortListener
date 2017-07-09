@@ -12,6 +12,7 @@ namespace ExcelSerialPortListener {
     internal static class Utilities {
         private const string ProcessName = "excel";
 
+        [ItemNotNull]
         [NotNull]
         internal static IReadOnlyList<Process> GetExcelInstances() {
             return Process.GetProcessesByName(ProcessName);
