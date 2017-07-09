@@ -12,10 +12,9 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace ExcelSerialPortListener {
     internal sealed partial class ExcelComms {
         private readonly Excel.Workbook _workBook;
-        private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
-        private Guid IID_IDispatch = new Guid(iidDispatchGuid);
         [NotNull]
         private readonly ChildWindowFinder childWindowFinder = ChildWindowFinder.FindWindowClass("EXCEL7");
+        private readonly ApplicationFinder applicationFinder = new ApplicationFinder();
 
         [NotNull]
         private string WorkSheetName { get; }
@@ -34,6 +33,23 @@ namespace ExcelSerialPortListener {
                 ErrorMessage("Excel is not running or requested spreadsheet is not open, exiting now");
             }
             (WorkSheetName, RangeName) = (workSheetName, rangeName);
+        }
+
+        private sealed class ApplicationFinder {
+            private Guid IID_IDispatch = new Guid(iidDispatchGuid);
+            private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
+
+            public bool TryGetExcelWindow(IntPtr hwndChild, out Excel.Window ptr) {
+                // If we found an accessible child window, call
+                // AccessibleObjectFromWindow, passing the constant
+                // OBJID_NATIVEOM (defined in winuser.h) and
+                // IID_IDispatch - we want an IDispatch pointer
+                // into the native object model.
+                const uint OBJID_NATIVEOM = 0xFFFFFFF0;
+
+                HResult hr = NativeMethods.AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, out ptr);
+                return hr.Succeeded;
+            }
         }
 
         /// <summary>
@@ -63,7 +79,7 @@ namespace ExcelSerialPortListener {
                 if (!childWindowFinder.TryFindChildWindow(winHandle, out var hwndChild)) {
                     continue;
                 }
-                if (!TryGetExcelWindow(hwndChild, out Excel.Window ptr)) {
+                if (!applicationFinder.TryGetExcelWindow(hwndChild, out Excel.Window ptr)) {
                     continue;
                 }
                 // If we successfully got a native OM
@@ -80,18 +96,6 @@ namespace ExcelSerialPortListener {
             }
             target = null;
             return false;
-        }
-
-        private bool TryGetExcelWindow(IntPtr hwndChild, out Excel.Window ptr) {
-            // If we found an accessible child window, call
-            // AccessibleObjectFromWindow, passing the constant
-            // OBJID_NATIVEOM (defined in winuser.h) and
-            // IID_IDispatch - we want an IDispatch pointer
-            // into the native object model.
-            const uint OBJID_NATIVEOM = 0xFFFFFFF0;
-
-            HResult hr = NativeMethods.AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, out ptr);
-            return hr.Succeeded;
         }
 
         internal bool TryWriteStringToWorksheet([NotNull] string valueToWrite) {
