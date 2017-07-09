@@ -93,8 +93,7 @@ namespace ExcelSerialPortListener {
             var indexOfSpaceG = onlyDigits.IndexOf(" g");
             if (indexOfSpaceG > 0)
                 onlyDigits = onlyDigits.Substring(0, indexOfSpaceG);
-            double tester;
-            return double.TryParse(onlyDigits, out tester) ? onlyDigits : string.Empty;
+            return double.TryParse(onlyDigits, out _) ? onlyDigits : string.Empty;
         }
     }
 }
