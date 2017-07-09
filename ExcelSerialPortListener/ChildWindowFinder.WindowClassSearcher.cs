@@ -1,4 +1,5 @@
 ﻿using System;
+using Validation;
 
 namespace ExcelSerialPortListener {
     internal sealed partial class ChildWindowFinder {
@@ -6,6 +7,8 @@ namespace ExcelSerialPortListener {
             private readonly string targetClassName;
 
             public WindowClassSearcher(string targetClassName) {
+                Requires.NotNullOrWhiteSpace(targetClassName, nameof(targetClassName));
+
                 this.targetClassName = targetClassName;
             }
 

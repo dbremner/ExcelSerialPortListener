@@ -25,6 +25,8 @@ namespace ExcelSerialPortListener {
         }
 
         public static ChildWindowFinder FindWindowClass(string className) {
+            Requires.NotNullOrWhiteSpace(className, nameof(className));
+
             var searcher = new WindowClassSearcher(className);
             return new ChildWindowFinder(searcher.EnumChildProc);
         }
