@@ -68,14 +68,18 @@ namespace ExcelSerialPortListener {
         }
 
         public static void ListenToScale(double timeOutInSeconds = 30) {
+            ListenToScale(DateTime.Now, timeOutInSeconds);
+        }
+
+        public static void ListenToScale(DateTime time, double timeOutInSeconds = 30) {
             Contract.Requires(Response != null);
-            var timeOut = DateTime.Now.AddSeconds(timeOutInSeconds);
+            var timeOut = time.AddSeconds(timeOutInSeconds);
             var isTimedOut = false;
             do {
                 if (Response.Length > 0)
                     break;
                 Thread.Sleep(200);
-                isTimedOut = DateTime.Now > timeOut;
+                isTimedOut = time > timeOut;
             } while (!isTimedOut);
 
             Response = isTimedOut ? "Timed Out" : OnlyDigits(Response);
