@@ -27,29 +27,30 @@ namespace ExcelSerialPortListener {
             var cellLocation = new CellLocation(workBookName: args[0], workSheetName: args[1], rangeName: args[2]);
 
             bool CommsAreOpen = ScaleComms.OpenPort();
-            if (CommsAreOpen) {
-                var mainThread = new Thread(() => ListenToScale());
-                var consoleKeyListener = new Thread(ListenerKeyBoardEvent);
-                
-                consoleKeyListener.Start();
-                mainThread.Start();
+            if (!CommsAreOpen) {
+                FatalError("Failed to open serial port connection");
+            }
+            var mainThread = new Thread(() => ListenToScale());
+            var consoleKeyListener = new Thread(ListenerKeyBoardEvent);
 
-                while (true) {
-                    if (_gotResponse) {
-                        mainThread.Abort();
-                        consoleKeyListener.Abort();
-                        break;
-                    } 
-                }
+            consoleKeyListener.Start();
+            mainThread.Start();
 
-                var excel = new ExcelComms(cellLocation);
+            while (true) {
+                if (_gotResponse) {
+                    mainThread.Abort();
+                    consoleKeyListener.Abort();
+                    break;
+                }
+            }
 
-                if (!excel.TryFindWorkbookByName(out var workBook)) {
-                    FatalError("Excel is not running or requested spreadsheet is not open, exiting now");
-                }
-                if (!excel.TryWriteStringToWorksheet(workBook, Response)) {
-                    FatalError("Failed to write to spreadsheet");
-                }
+            var excel = new ExcelComms(cellLocation);
+
+            if (!excel.TryFindWorkbookByName(out var workBook)) {
+                FatalError("Excel is not running or requested spreadsheet is not open, exiting now");
+            }
+            if (!excel.TryWriteStringToWorksheet(workBook, Response)) {
+                FatalError("Failed to write to spreadsheet");
             }
 
             ScaleComms.ClosePort();
