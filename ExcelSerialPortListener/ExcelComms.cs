@@ -70,8 +70,8 @@ namespace ExcelSerialPortListener {
                 // IDispatch pointer, we can QI this for
                 // an Excel Application (using the implicit
                 // cast operator supplied in the PIA).
-                var app = ptr.Application;
-                foreach (Excel.Workbook wkbk in app.Workbooks) {
+                var workbooks = ptr.Application.Workbooks;
+                foreach (Excel.Workbook wkbk in workbooks) {
                     if (wkbk.Name == callingWkbkName) {
                         target = wkbk;
                         return true;
