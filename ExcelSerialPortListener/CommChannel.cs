@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 using Validation;
 
 namespace ExcelSerialPortListener {
-    internal sealed class CommChannel {
+    internal sealed class CommChannel : IDisposable {
         [NotNull] private readonly SerialPort CommPort = new SerialPort {
             PortName = Settings.Default.PortName,
             BaudRate = Settings.Default.BaudRate,
@@ -82,6 +82,11 @@ namespace ExcelSerialPortListener {
 
             var sp = (SerialPort)sender;
             action(sp.ReadExisting());
+        }
+
+        public void Dispose() {
+            CommPort.Close();
+            CommPort.Dispose();
         }
     }
 }
