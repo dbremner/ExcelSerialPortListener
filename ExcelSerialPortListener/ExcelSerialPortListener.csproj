@@ -148,7 +148,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChildWindowFinder.cs" />
     <Compile Include="CommChannel.cs" />
+    <Compile Include="ChildWindowCallback.cs" />
     <Compile Include="ExcelComms.cs" />
     <Compile Include="ExcelComms.NativeMethods.cs" />
     <Compile Include="Program.cs" />

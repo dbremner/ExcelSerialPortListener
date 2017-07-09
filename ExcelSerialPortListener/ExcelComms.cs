@@ -63,7 +63,7 @@ namespace ExcelSerialPortListener {
                     continue;
                 }
                 //Console.WriteLine($"hwndChild = {hwndChild}");
-                if (!TryFindAccessibleChildWindow(winHandle, out var hwndChild)) {
+                if (!ChildWindowFinder.TryFindAccessibleChildWindow(winHandle, out var hwndChild)) {
                     continue;
                 }
                 //Console.WriteLine($"hr ptr = {hr}");
@@ -86,31 +86,6 @@ namespace ExcelSerialPortListener {
             //Console.WriteLine($"Failed to find Workbook named '{callingWkbkName}'");
             target = null;
             return false;
-        }
-
-        private static bool TryFindAccessibleChildWindow(IntPtr mainWindow, out IntPtr childWindow) {
-            //Console.WriteLine($"winHandle = {winHandle}");
-            // We need to enumerate the child windows to find one that
-            // supports accessibility. To do this, instantiate the
-            // delegate and wrap the callback method in it, then call
-            // EnumChildWindows, passing the delegate as the 2nd arg.
-            childWindow = IntPtr.Zero;
-            if (mainWindow != IntPtr.Zero) {
-
-                bool EnumChildProc(IntPtr child, ref IntPtr lParam)
-                {
-                    var className = PInvoke.User32.GetClassName(child);
-                    if (className == "EXCEL7")
-                    {
-                        lParam = child;
-                        return false;
-                    }
-                    return true;
-                }
-
-                NativeMethods.EnumChildWindows(mainWindow, EnumChildProc, ref childWindow);
-            }
-            return childWindow != IntPtr.Zero;
         }
 
         private bool TryGetExcelWindow(IntPtr hwndChild, out Excel.Window ptr) {
