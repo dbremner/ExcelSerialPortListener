@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Text;
 using System.Windows.Forms;
 using JetBrains.Annotations;
 using PInvoke;
+using Validation;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
@@ -26,19 +26,9 @@ namespace ExcelSerialPortListener {
         }
 
         public ExcelComms([NotNull] string workBookName, [NotNull] string workSheetName, [NotNull] string rangeName) {
-            if (String.IsNullOrWhiteSpace(workBookName)) {
-                throw new ArgumentNullException(nameof(workBookName));
-            }
-
-            if (String.IsNullOrWhiteSpace(workSheetName)) {
-                throw new ArgumentNullException(nameof(workSheetName));
-            }
-
-            if (String.IsNullOrWhiteSpace(rangeName)) {
-                throw new ArgumentNullException(nameof(rangeName));
-            }
-
-            Contract.EndContractBlock();
+            Requires.NotNullOrWhiteSpace(workBookName, nameof(workBookName));
+            Requires.NotNullOrWhiteSpace(workSheetName, nameof(workSheetName));
+            Requires.NotNullOrWhiteSpace(rangeName, nameof(rangeName));
 
             if (!TryFindWorkbookByName(workBookName, out _workBook)) {
                 MessageBox.Show("Excel is not running or requested spreadsheet is not open, exiting now",
@@ -46,13 +36,6 @@ namespace ExcelSerialPortListener {
                 Environment.Exit(1);
             }
             (WorkSheetName, RangeName) = (workSheetName, rangeName);
-        }
-
-        [ContractInvariantMethod]
-        private void ObjectInvariant() {
-            Contract.Invariant(WorkBook != null);
-            Contract.Invariant(WorkSheetName != null);
-            Contract.Invariant(RangeName != null);
         }
 
         /// <summary>
@@ -66,11 +49,8 @@ namespace ExcelSerialPortListener {
         /// <param name="target"></param>
         /// <returns>Excel.Workbook</returns>
         private bool TryFindWorkbookByName([NotNull] string callingWkbkName, out Excel.Workbook target) {
-            if (String.IsNullOrWhiteSpace(callingWkbkName)) {
-                throw new ArgumentNullException(nameof(callingWkbkName));
-            }
+            Requires.NotNullOrWhiteSpace(callingWkbkName, nameof(callingWkbkName));
 
-            Contract.EndContractBlock();
             IReadOnlyList<Process> excelInstances = Process.GetProcessesByName("excel");
             if (excelInstances.Count == 0) {
                 target = null;
@@ -78,7 +58,6 @@ namespace ExcelSerialPortListener {
             }
 
             foreach (var p in excelInstances) {
-                Contract.Assume(p != null);
                 var winHandle = p.MainWindowHandle;
                 if (winHandle == IntPtr.Zero) {
                     continue;
@@ -100,7 +79,6 @@ namespace ExcelSerialPortListener {
                 // IDispatch pointer, we can QI this for
                 // an Excel Application (using the implicit
                 // cast operator supplied in the PIA).
-                Contract.Assume(ptr != null);
                 var app = ptr.Application;
                 foreach (Excel.Workbook wkbk in app.Workbooks) {
                     if (wkbk.Name == callingWkbkName) {
@@ -140,13 +118,10 @@ namespace ExcelSerialPortListener {
         }
 
         internal bool TryWriteStringToWorksheet([NotNull] string valueToWrite) {
-            if (String.IsNullOrWhiteSpace(valueToWrite)) {
-                throw new ArgumentNullException(nameof(valueToWrite));
-            }
+            Requires.NotNullOrWhiteSpace(valueToWrite, nameof(valueToWrite));
+            Requires.NotNull(WorkBook, nameof(WorkBook));
+            Requires.NotNull(WorkBook.Worksheets, nameof(WorkBook.Worksheets));
 
-            Contract.Requires(WorkBook != null);
-            Contract.Requires(WorkBook.Worksheets != null);
-            Contract.EndContractBlock();
             try {
                 WorkBook.Worksheets[WorkSheetName].Range[RangeName].Value = valueToWrite;
                 return true;
@@ -158,7 +133,7 @@ namespace ExcelSerialPortListener {
         }
 
         private static bool EnumChildProc(IntPtr hwndChild, ref IntPtr lParam) {
-            Contract.Requires(hwndChild != IntPtr.Zero);
+            Requires.NotNull(hwndChild, nameof(hwndChild));
             var className = PInvoke.User32.GetClassName(hwndChild);
             if (className == "EXCEL7") {
                 lParam = hwndChild;

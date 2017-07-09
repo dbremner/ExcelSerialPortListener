@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.Ports;
 using System.Threading;
 using ExcelSerialPortListener.Properties;
 using JetBrains.Annotations;
+using Validation;
 
 namespace ExcelSerialPortListener {
     public sealed class CommChannel {
@@ -31,11 +31,6 @@ namespace ExcelSerialPortListener {
             }
             // add listener event handler
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
-        }
-
-        [ContractInvariantMethod]
-        private void ObjectInvariant() {
-            Contract.Invariant(CommPort != null);
         }
 
         // === Methods ===
@@ -92,11 +87,8 @@ namespace ExcelSerialPortListener {
         //}
 
         internal void WriteData([NotNull] string dataString) {
-            if (dataString == null) {
-                throw new ArgumentNullException(nameof(dataString));
-            }
+            Requires.NotNull(dataString, nameof(dataString));
 
-            Contract.EndContractBlock();
             Console.WriteLine("got Print command.");
             if (!IsOpen) {
                 CommPort.Open();
@@ -119,11 +111,8 @@ namespace ExcelSerialPortListener {
         //}
 
         private void SerialDeviceDataReceivedHandler([NotNull] object sender, [NotNull] SerialDataReceivedEventArgs e) {
-            if (sender == null) {
-                throw new ArgumentNullException(nameof(sender));
-            }
+            Requires.NotNull(sender, nameof(sender));
 
-            Contract.EndContractBlock();
             var sp = (SerialPort)sender;
             Program.Response = sp.ReadExisting();
             Console.WriteLine("Received Response: {0}", Program.Response);

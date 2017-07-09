@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
 using JetBrains.Annotations;
+using Validation;
 using static System.StringComparison;
 
 namespace ExcelSerialPortListener {
@@ -57,7 +57,7 @@ namespace ExcelSerialPortListener {
         }
 
         private static void ListenerKeyBoardEvent() {
-            Contract.Requires(ScaleComms != null);
+            Requires.NotNull(ScaleComms, nameof(ScaleComms));
             while (true) {
                 if (Console.ReadKey(true).Key == ConsoleKey.Spacebar) {
                     Console.WriteLine("Saw pressed key!");
@@ -71,7 +71,7 @@ namespace ExcelSerialPortListener {
         }
 
         private static void ListenToScale(DateTime time, double timeOutInSeconds = 30) {
-            Contract.Requires(Response != null);
+            Requires.NotNull(Response, nameof(Response));
             var timeOut = time.AddSeconds(timeOutInSeconds);
             var isTimedOut = false;
             do {
@@ -88,11 +88,8 @@ namespace ExcelSerialPortListener {
         }
 
         private static string OnlyDigits([NotNull] string s) {
-            if (s == null) {
-                throw new ArgumentNullException(nameof(s));
-            }
+            Requires.NotNull(s, nameof(s));
 
-            Contract.EndContractBlock();
             var onlyDigits = s.Trim();
             var indexOfSpaceG = onlyDigits.IndexOf(" g", Ordinal);
             if (indexOfSpaceG > 0) {
