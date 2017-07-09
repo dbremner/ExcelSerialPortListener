@@ -15,7 +15,7 @@ namespace ExcelSerialPortListener {
         private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
         private Guid IID_IDispatch = new Guid(iidDispatchGuid);
         [NotNull]
-        private readonly ChildWindowFinder childWindowFinder = new ChildWindowFinder(EnumChildProc);
+        private readonly ChildWindowFinder childWindowFinder = ChildWindowFinder.FindWindowClass("EXCEL7");
 
         [NotNull]
         private string WorkSheetName { get; }
@@ -80,15 +80,6 @@ namespace ExcelSerialPortListener {
             }
             target = null;
             return false;
-        }
-
-        private static bool EnumChildProc(IntPtr child, ref IntPtr lParam) {
-            var className = PInvoke.User32.GetClassName(child);
-            if (className == "EXCEL7") {
-                lParam = child;
-                return false;
-            }
-            return true;
         }
 
         private bool TryGetExcelWindow(IntPtr hwndChild, out Excel.Window ptr) {
