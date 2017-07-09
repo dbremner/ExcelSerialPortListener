@@ -22,7 +22,7 @@ namespace ExcelSerialPortListener {
         private bool IsOpen => CommPort.IsOpen;
 
         public CommChannel() {
-            if(CommPort.IsOpen) {
+            if(IsOpen) {
                 CommPort.Close();
             }
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
