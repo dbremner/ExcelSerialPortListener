@@ -71,7 +71,8 @@ namespace ExcelSerialPortListener {
                 // an Excel Application (using the implicit
                 // cast operator supplied in the PIA).
                 var workbooks = ptr.Application.Workbooks;
-                if (TryFindWorkbook(workbooks, callingWkbkName, out target)) {
+                if (TryFindWorkbook(workbooks, callingWkbkName, out var victim)) {
+                    target = victim;
                     return true;
                 }
             }
