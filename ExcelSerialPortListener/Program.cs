@@ -11,7 +11,6 @@ namespace ExcelSerialPortListener {
         public static string Response { get; set; } = string.Empty;
         private static bool _gotResponse;
         private static CommChannel ScaleComms { get; set; }
-        private static bool CommsAreOpen { get; set; }
 
         [STAThread]
         private static void Main([ItemNotNull] string[] args) {
@@ -31,7 +30,7 @@ namespace ExcelSerialPortListener {
 
             ScaleComms = new CommChannel();
 
-            CommsAreOpen = ScaleComms.OpenPort();
+            bool CommsAreOpen = ScaleComms.OpenPort();
             if (CommsAreOpen) {
                 var mainThread = new Thread(() => ListenToScale());
                 var consoleKeyListener = new Thread(ListenerKeyBoardEvent);
