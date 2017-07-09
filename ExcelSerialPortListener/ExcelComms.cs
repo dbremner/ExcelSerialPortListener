@@ -94,7 +94,6 @@ namespace ExcelSerialPortListener {
         }
 
         private static bool TryFindAccessibleChildWindow(IntPtr mainWindow, out IntPtr childWindow) {
-            childWindow = IntPtr.Zero;
             //Console.WriteLine($"winHandle = {winHandle}");
             // We need to enumerate the child windows to find one that
             // supports accessibility. To do this, instantiate the
@@ -102,6 +101,7 @@ namespace ExcelSerialPortListener {
             // EnumChildWindows, passing the delegate as the 2nd arg.
             if (mainWindow != IntPtr.Zero) {
                 var hwndChild = IntPtr.Zero;
+
                 bool EnumChildProc(IntPtr child, ref IntPtr lParam)
                 {
                     var className = PInvoke.User32.GetClassName(child);
@@ -112,8 +112,12 @@ namespace ExcelSerialPortListener {
                     }
                     return true;
                 }
+
                 NativeMethods.EnumChildWindows(mainWindow, EnumChildProc, ref hwndChild);
                 childWindow = hwndChild;
+            }
+            else {
+                childWindow = IntPtr.Zero;
             }
             return childWindow != IntPtr.Zero;
         }
