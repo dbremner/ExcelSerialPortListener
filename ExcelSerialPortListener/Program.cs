@@ -73,8 +73,10 @@ namespace ExcelSerialPortListener {
             var timeOut = time.AddSeconds(timeOutInSeconds);
             var isTimedOut = false;
             do {
-                if (Response.Length > 0)
+                if (Response.Length > 0) {
                     break;
+                }
+
                 Thread.Sleep(200);
                 isTimedOut = time > timeOut;
             } while (!isTimedOut);
@@ -84,12 +86,17 @@ namespace ExcelSerialPortListener {
         }
 
         private static string OnlyDigits([NotNull] string s) {
-            if (s == null) throw new ArgumentNullException(nameof(s));
+            if (s == null) {
+                throw new ArgumentNullException(nameof(s));
+            }
+
             Contract.EndContractBlock();
             var onlyDigits = s.Trim();
             var indexOfSpaceG = onlyDigits.IndexOf(" g");
-            if (indexOfSpaceG > 0)
+            if (indexOfSpaceG > 0) {
                 onlyDigits = onlyDigits.Substring(0, indexOfSpaceG);
+            }
+
             return double.TryParse(onlyDigits, out _) ? onlyDigits : string.Empty;
         }
     }

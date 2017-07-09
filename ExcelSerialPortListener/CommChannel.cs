@@ -25,7 +25,9 @@ namespace ExcelSerialPortListener {
                 //Handshake = Handshake.None;
                 //RtsEnable = true;
             };
-            if(CommPort.IsOpen) CommPort.Close();
+            if(CommPort.IsOpen) {
+                CommPort.Close();
+            }
             // add listener event handler
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
         }
@@ -37,7 +39,9 @@ namespace ExcelSerialPortListener {
 
         // === Methods ===
         public void ClosePort() {
-            if (IsOpen) CommPort.Close();
+            if (IsOpen) {
+                CommPort.Close();
+            }
         }
 
         public bool OpenPort() {
@@ -87,11 +91,16 @@ namespace ExcelSerialPortListener {
         //}
 
         public void WriteData([NotNull] string dataString) {
-            if (dataString == null) throw new ArgumentNullException(nameof(dataString));
+            if (dataString == null) {
+                throw new ArgumentNullException(nameof(dataString));
+            }
+
             Contract.EndContractBlock();
             Console.WriteLine("got Print command.");
-            if (!IsOpen)
+            if (!IsOpen) {
                 CommPort.Open();
+            }
+
             CommPort.Write(dataString);
         }
 
@@ -109,7 +118,10 @@ namespace ExcelSerialPortListener {
         //}
 
         private void SerialDeviceDataReceivedHandler([NotNull] object sender, [NotNull] SerialDataReceivedEventArgs e) {
-            if (sender == null) throw new ArgumentNullException(nameof(sender));
+            if (sender == null) {
+                throw new ArgumentNullException(nameof(sender));
+            }
+
             Contract.EndContractBlock();
             var sp = (SerialPort)sender;
             Program.Response = sp.ReadExisting();
