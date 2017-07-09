@@ -21,8 +21,6 @@ namespace ExcelSerialPortListener {
 
         [NotNull] private readonly Action<string> action;
 
-        private bool IsOpen => CommPort.IsOpen;
-
         public CommChannel([NotNull] Action<string> action) {
             Requires.NotNull(action, nameof(action));
 
@@ -30,6 +28,8 @@ namespace ExcelSerialPortListener {
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
             this.action = action;
         }
+
+        private bool IsOpen => CommPort.IsOpen;
 
         internal void ClosePort() {
             if (IsOpen) {
