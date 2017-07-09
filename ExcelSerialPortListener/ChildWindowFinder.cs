@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace ExcelSerialPortListener {
     internal sealed partial class ChildWindowFinder {
         private readonly IntPtr mainWindow;
 
-        private readonly ChildWindowCallback callback;
+        [NotNull] private readonly ChildWindowCallback callback;
 
-        public ChildWindowFinder(IntPtr mainWindow, ChildWindowCallback callback) {
+        public ChildWindowFinder(IntPtr mainWindow, [NotNull] ChildWindowCallback callback) {
             this.mainWindow = mainWindow;
             this.callback = callback;
         }
