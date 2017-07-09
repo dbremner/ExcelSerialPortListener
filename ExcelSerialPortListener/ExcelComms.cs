@@ -62,11 +62,6 @@ namespace ExcelSerialPortListener {
                 if (winHandle == IntPtr.Zero) {
                     continue;
                 }
-                // If we found an accessible child window, call
-                // AccessibleObjectFromWindow, passing the constant
-                // OBJID_NATIVEOM (defined in winuser.h) and
-                // IID_IDispatch - we want an IDispatch pointer
-                // into the native object model.
                 //Console.WriteLine($"hwndChild = {hwndChild}");
                 if (!TryFindAccessibleChildWindow(winHandle, out var hwndChild)) {
                     continue;
@@ -124,6 +119,11 @@ namespace ExcelSerialPortListener {
 
         private bool TryGetExcelWindow(IntPtr hwndChild, out Excel.Window ptr)
         {
+            // If we found an accessible child window, call
+            // AccessibleObjectFromWindow, passing the constant
+            // OBJID_NATIVEOM (defined in winuser.h) and
+            // IID_IDispatch - we want an IDispatch pointer
+            // into the native object model.
             const uint OBJID_NATIVEOM = 0xFFFFFFF0;
 
             HResult hr = NativeMethods.AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, out ptr);
