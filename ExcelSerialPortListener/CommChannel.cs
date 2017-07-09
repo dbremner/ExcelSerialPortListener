@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.IO.Ports;
 using System.Threading;
 using ExcelSerialPortListener.Properties;
@@ -40,12 +41,32 @@ namespace ExcelSerialPortListener {
         }
 
         public bool OpenPort() {
+            bool result = true;
+            void HandleException() => result = false;
             try {
                 CommPort.Open();
-                return true;
-            } catch {
-                return false;
             }
+            catch (UnauthorizedAccessException) {
+                //There are several possible causes.
+                //1. access is denied
+                //2. the current process has already opened it
+                //3. another process has already opened it
+                HandleException();
+            }
+
+            catch (ArgumentOutOfRangeException) {
+                //One or more of the properties for this instance are invalid
+                HandleException();
+            }
+            catch (IOException) {
+                //The port is in an invalid state or setting the port state failed.
+                HandleException();
+            }
+            catch (InvalidOperationException) {
+                //The port is already open
+                HandleException();
+            }
+            return result;
         }
 
         //public string ReadData(double timeOutInSeconds = 30) {
