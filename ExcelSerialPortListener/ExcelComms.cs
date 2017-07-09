@@ -36,8 +36,7 @@ namespace ExcelSerialPortListener {
                     nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
             }
-            WorkSheetName = workSheetName;
-            RangeName = rangeName;
+            (WorkSheetName, RangeName) = (workSheetName, rangeName);
         }
 
         [ContractInvariantMethod]
