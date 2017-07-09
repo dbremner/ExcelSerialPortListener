@@ -7,7 +7,7 @@ using static System.StringComparison;
 using static ExcelSerialPortListener.Utilities;
 
 namespace ExcelSerialPortListener {
-    internal class Program {
+    internal static class Program {
         [NotNull]
         public static string Response { get; set; } = string.Empty;
         private static bool _gotResponse;
