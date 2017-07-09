@@ -8,21 +8,20 @@ using Validation;
 
 namespace ExcelSerialPortListener {
     internal sealed class CommChannel {
-        [NotNull] private readonly SerialPort CommPort;
+        [NotNull] private readonly SerialPort CommPort = new SerialPort {
+            PortName = Settings.Default.PortName,
+            BaudRate = Settings.Default.BaudRate,
+            DataBits = Settings.Default.DataBits,
+            StopBits = Settings.Default.StopBits,        //None, One, OnePointFive, Two
+            Parity = Settings.Default.Parity,            //Even, Mark, None, Odd, Space
+            ReceivedBytesThreshold = Settings.Default.ReceivedBytesThreshold,
+            //Handshake = Handshake.None;
+            //RtsEnable = true;
+        };
 
         private bool IsOpen => CommPort.IsOpen;
 
         public CommChannel() {
-            CommPort = new SerialPort {
-                PortName = Settings.Default.PortName,
-                BaudRate = Settings.Default.BaudRate,
-                DataBits = Settings.Default.DataBits,
-                StopBits = Settings.Default.StopBits,        //None, One, OnePointFive, Two
-                Parity = Settings.Default.Parity,            //Even, Mark, None, Odd, Space
-                ReceivedBytesThreshold = Settings.Default.ReceivedBytesThreshold,
-                //Handshake = Handshake.None;
-                //RtsEnable = true;
-            };
             if(CommPort.IsOpen) {
                 CommPort.Close();
             }
