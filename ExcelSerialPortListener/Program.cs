@@ -27,10 +27,7 @@ namespace ExcelSerialPortListener {
                 return;
             }
 
-            // args: WorkbookName, WorkSheetName, Range
-            string workbookName = args[0];
-            string worksheetName = args[1];
-            string rangeName = args[2];
+            var (workbookName, worksheetName, rangeName) = (args[0], args[1], args[2]);
 
             ScaleComms = new CommChannel();
 
