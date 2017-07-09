@@ -104,7 +104,6 @@ namespace ExcelSerialPortListener {
                 var hwndChild = IntPtr.Zero;
                 bool EnumChildProc(IntPtr child, ref IntPtr lParam)
                 {
-                    Requires.NotNull(child, nameof(child));
                     var className = PInvoke.User32.GetClassName(child);
                     if (className == "EXCEL7")
                     {
