@@ -102,6 +102,17 @@ namespace ExcelSerialPortListener {
             // EnumChildWindows, passing the delegate as the 2nd arg.
             if (mainWindow != IntPtr.Zero) {
                 var hwndChild = IntPtr.Zero;
+                bool EnumChildProc(IntPtr child, ref IntPtr lParam)
+                {
+                    Requires.NotNull(child, nameof(child));
+                    var className = PInvoke.User32.GetClassName(child);
+                    if (className == "EXCEL7")
+                    {
+                        lParam = child;
+                        return false;
+                    }
+                    return true;
+                }
                 NativeMethods.EnumChildWindows(mainWindow, EnumChildProc, ref hwndChild);
                 childWindow = hwndChild;
             }
@@ -129,16 +140,6 @@ namespace ExcelSerialPortListener {
                 //Console.WriteLine($"Failed to write value to Excel spreadsheet {WorkBook?.Name}.{WorkSheetName}.{RangeName}, {e.Message}");
                 return false;
             }
-        }
-
-        private static bool EnumChildProc(IntPtr hwndChild, ref IntPtr lParam) {
-            Requires.NotNull(hwndChild, nameof(hwndChild));
-            var className = PInvoke.User32.GetClassName(hwndChild);
-            if (className == "EXCEL7") {
-                lParam = hwndChild;
-                return false;
-            }
-            return true;
         }
     }
 }
