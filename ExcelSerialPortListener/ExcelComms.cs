@@ -63,7 +63,7 @@ namespace ExcelSerialPortListener {
                 if (!childWindowFinder.TryFindChildWindow(winHandle, out var hwndChild)) {
                     continue;
                 }
-                if (!windowFinder.TryGetExcelWindow(hwndChild, out Excel.Window ptr)) {
+                if (!windowFinder.TryFindExcelWindow(hwndChild, out Excel.Window ptr)) {
                     continue;
                 }
                 // If we successfully got a native OM
