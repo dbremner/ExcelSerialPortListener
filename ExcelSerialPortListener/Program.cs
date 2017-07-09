@@ -4,6 +4,7 @@ using System.Threading;
 using JetBrains.Annotations;
 using Validation;
 using static System.StringComparison;
+using static ExcelSerialPortListener.Utilities;
 
 namespace ExcelSerialPortListener {
     internal class Program {
@@ -15,13 +16,13 @@ namespace ExcelSerialPortListener {
         [STAThread]
         private static void Main([ItemNotNull] string[] args) {
             if (args.Length != 3) {
-                Utilities.ErrorMessage("Expected 3 arguments: WorkbookName, WorkSheetName, Range");
+                ErrorMessage("Expected 3 arguments: WorkbookName, WorkSheetName, Range");
                 return;
             }
 
-            var instances = Utilities.GetExcelInstances();
+            var instances = GetExcelInstances();
             if (instances.Count == 0) {
-                Utilities.ErrorMessage("Excel is not running, please open Excel with the appropriate spreadsheet.");
+                ErrorMessage("Excel is not running, please open Excel with the appropriate spreadsheet.");
                 return;
             }
 

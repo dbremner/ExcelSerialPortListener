@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using JetBrains.Annotations;
 using PInvoke;
 using Validation;
+using static ExcelSerialPortListener.Utilities;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
@@ -28,7 +29,7 @@ namespace ExcelSerialPortListener {
             Requires.NotNullOrWhiteSpace(rangeName, nameof(rangeName));
 
             if (!TryFindWorkbookByName(workBookName, out _workBook)) {
-                Utilities.ErrorMessage("Excel is not running or requested spreadsheet is not open, exiting now");
+                ErrorMessage("Excel is not running or requested spreadsheet is not open, exiting now");
                 Environment.Exit(1);
             }
             (WorkSheetName, RangeName) = (workSheetName, rangeName);
@@ -47,7 +48,7 @@ namespace ExcelSerialPortListener {
         private bool TryFindWorkbookByName([NotNull] string callingWkbkName, out Excel.Workbook target) {
             Requires.NotNullOrWhiteSpace(callingWkbkName, nameof(callingWkbkName));
 
-            var excelInstances = Utilities.GetExcelInstances();
+            var excelInstances = GetExcelInstances();
             if (excelInstances.Count == 0) {
                 target = null;
                 return false;
