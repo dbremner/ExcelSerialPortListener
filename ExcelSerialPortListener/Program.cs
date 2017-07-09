@@ -51,7 +51,7 @@ namespace ExcelSerialPortListener {
             ScaleComms.ClosePort();
         }
 
-        private static void ErrorMessage(string message) {
+        private static void ErrorMessage([NotNull] string message) {
             MessageBox.Show(message, nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
