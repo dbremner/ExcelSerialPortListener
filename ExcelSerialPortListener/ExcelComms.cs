@@ -117,7 +117,7 @@ namespace ExcelSerialPortListener {
             return false;
         }
 
-        private bool TryFindAccessibleChildWindow(IntPtr mainWindow, out IntPtr childWindow) {
+        private static bool TryFindAccessibleChildWindow(IntPtr mainWindow, out IntPtr childWindow) {
             childWindow = IntPtr.Zero;
             //Console.WriteLine($"winHandle = {winHandle}");
             // We need to enumerate the child windows to find one that
