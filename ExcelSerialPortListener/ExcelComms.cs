@@ -14,6 +14,7 @@ namespace ExcelSerialPortListener {
         private readonly Excel.Workbook _workBook;
         private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
         private Guid IID_IDispatch = new Guid(iidDispatchGuid);
+        [NotNull]
         private readonly ChildWindowFinder childWindowFinder = new ChildWindowFinder(EnumChildProc);
 
         [NotNull]
