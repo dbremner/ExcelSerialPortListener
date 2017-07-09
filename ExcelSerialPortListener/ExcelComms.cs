@@ -38,6 +38,7 @@ namespace ExcelSerialPortListener {
         /// </summary>
         /// <param name="target"></param>
         /// <returns>Excel.Workbook</returns>
+        [ContractAnnotation("=> false, target:null; => true, target:notnull")]
         public bool TryFindWorkbookByName([CanBeNull] out Excel.Workbook target) {
 
             var excelInstances = GetExcelInstances();
@@ -71,6 +72,7 @@ namespace ExcelSerialPortListener {
             return false;
         }
 
+        [ContractAnnotation("=> false, target:null; => true, target:notnull")]
         private bool TryFindWorkbook([NotNull] Excel.Workbooks workbooks, [CanBeNull] out Excel.Workbook target) {
             Requires.NotNull(workbooks, nameof(workbooks));
 
