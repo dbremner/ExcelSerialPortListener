@@ -1,12 +1,13 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Validation;
 
 namespace ExcelSerialPortListener {
     internal sealed partial class ChildWindowFinder {
         private sealed class WindowClassSearcher {
-            private readonly string targetClassName;
+            [NotNull] private readonly string targetClassName;
 
-            public WindowClassSearcher(string targetClassName) {
+            public WindowClassSearcher([NotNull] string targetClassName) {
                 Requires.NotNullOrWhiteSpace(targetClassName, nameof(targetClassName));
 
                 this.targetClassName = targetClassName;

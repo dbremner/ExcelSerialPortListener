@@ -24,6 +24,7 @@ namespace ExcelSerialPortListener {
             return childWindow != IntPtr.Zero;
         }
 
+        [NotNull]
         public static ChildWindowFinder FindWindowClass(string className) {
             Requires.NotNullOrWhiteSpace(className, nameof(className));
 
