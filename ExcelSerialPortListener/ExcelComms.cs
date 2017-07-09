@@ -63,7 +63,7 @@ namespace ExcelSerialPortListener {
                     continue;
                 }
                 //Console.WriteLine($"hwndChild = {hwndChild}");
-                if (!ChildWindowFinder.TryFindAccessibleChildWindow(winHandle, out var hwndChild)) {
+                if (!ChildWindowFinder.TryFindChildWindow(winHandle, out var hwndChild)) {
                     continue;
                 }
                 //Console.WriteLine($"hr ptr = {hr}");
