@@ -117,8 +117,7 @@ namespace ExcelSerialPortListener {
             return childWindow != IntPtr.Zero;
         }
 
-        private bool TryGetExcelWindow(IntPtr hwndChild, out Excel.Window ptr)
-        {
+        private bool TryGetExcelWindow(IntPtr hwndChild, out Excel.Window ptr) {
             // If we found an accessible child window, call
             // AccessibleObjectFromWindow, passing the constant
             // OBJID_NATIVEOM (defined in winuser.h) and
