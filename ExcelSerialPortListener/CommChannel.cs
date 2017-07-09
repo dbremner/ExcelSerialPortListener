@@ -23,7 +23,9 @@ namespace ExcelSerialPortListener {
 
         private bool IsOpen => CommPort.IsOpen;
 
-        public CommChannel([NotNull] Action<string> action){
+        public CommChannel([NotNull] Action<string> action) {
+            Requires.NotNull(action, nameof(action));
+
             ClosePort();
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
             this.action = action;

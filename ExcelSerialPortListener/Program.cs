@@ -96,6 +96,8 @@ namespace ExcelSerialPortListener {
         }
 
         private static void SetResponse([NotNull] string data) {
+            Requires.NotNull(data, nameof(data));
+
             Response = data;
             Console.WriteLine("Received Response: {0}", Program.Response);
         }
