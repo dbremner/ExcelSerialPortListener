@@ -59,12 +59,10 @@ namespace ExcelSerialPortListener {
                 if (winHandle == IntPtr.Zero) {
                     continue;
                 }
-                //Console.WriteLine($"hwndChild = {hwndChild}");
                 var childWindowFinder = new ChildWindowFinder(winHandle, EnumChildProc);
                 if (!childWindowFinder.TryFindChildWindow(out var hwndChild)) {
                     continue;
                 }
-                //Console.WriteLine($"hr ptr = {hr}");
                 if (!TryGetExcelWindow(hwndChild, out Excel.Window ptr)) {
                     continue;
                 }
@@ -75,13 +73,11 @@ namespace ExcelSerialPortListener {
                 var app = ptr.Application;
                 foreach (Excel.Workbook wkbk in app.Workbooks) {
                     if (wkbk.Name == callingWkbkName) {
-                        //Console.WriteLine($"Workbook name = {wkbk.Name}");
                         target = wkbk;
                         return true;
                     }
                 }
             }
-            //Console.WriteLine($"Failed to find Workbook named '{callingWkbkName}'");
             target = null;
             return false;
         }
@@ -117,7 +113,6 @@ namespace ExcelSerialPortListener {
                 return true;
             }
             catch (Exception) {
-                //Console.WriteLine($"Failed to write value to Excel spreadsheet {WorkBook?.Name}.{WorkSheetName}.{RangeName}, {e.Message}");
                 return false;
             }
         }

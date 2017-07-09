@@ -64,23 +64,6 @@ namespace ExcelSerialPortListener {
             return result;
         }
 
-        //public string ReadData(double timeOutInSeconds = 30) {
-        //    DateTime timeOut = DateTime.Now.AddSeconds(timeOutInSeconds);
-        //    bool isTimedOut = false;
-        //    do {
-        //        if (Response.Length > 0)
-        //            break;
-        //        Thread.Sleep(200);
-        //        isTimedOut = DateTime.Now > timeOut;
-        //    } while (!isTimedOut);
-
-        //    if (isTimedOut) {
-        //        return "Timed Out";
-        //    } else {
-        //        return OnlyDigits(Response);
-        //    }
-        //}
-
         internal void WriteData([NotNull] string dataString) {
             Requires.NotNull(dataString, nameof(dataString));
 

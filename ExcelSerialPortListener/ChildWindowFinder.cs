@@ -16,7 +16,6 @@ namespace ExcelSerialPortListener {
         }
 
         public bool TryFindChildWindow(out IntPtr childWindow) {
-            //Console.WriteLine($"winHandle = {winHandle}");
             childWindow = IntPtr.Zero;
             if (mainWindow != IntPtr.Zero) {
                 NativeMethods.EnumChildWindows(mainWindow, callback, ref childWindow);
