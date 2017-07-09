@@ -24,7 +24,7 @@ namespace ExcelSerialPortListener {
                 FatalError("Excel is not running, please open Excel with the appropriate spreadsheet.");
             }
 
-            var cellLocation = new CellLocation(args[0], args[1], args[2]);
+            var cellLocation = new CellLocation(workBookName: args[0], workSheetName: args[1], rangeName: args[2]);
 
             bool CommsAreOpen = ScaleComms.OpenPort();
             if (CommsAreOpen) {
