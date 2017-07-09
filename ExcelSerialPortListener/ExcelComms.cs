@@ -20,10 +20,7 @@ namespace ExcelSerialPortListener {
         [NotNull]
         private string RangeName { get; }
 
-        private Excel.Workbook WorkBook
-        {
-            get { return _workBook; }
-        }
+        private Excel.Workbook WorkBook => _workBook;
 
         public ExcelComms([NotNull] string workBookName, [NotNull] string workSheetName, [NotNull] string rangeName) {
             Requires.NotNullOrWhiteSpace(workBookName, nameof(workBookName));
