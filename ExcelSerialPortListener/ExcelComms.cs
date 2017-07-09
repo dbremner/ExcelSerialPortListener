@@ -31,8 +31,7 @@ namespace ExcelSerialPortListener {
             if (String.IsNullOrWhiteSpace(rangeName)) throw new ArgumentNullException(nameof(rangeName));
             Contract.EndContractBlock();
 
-            bool found = TryFindWorkbookByName(workBookName, out _workBook);
-            if (!found) {
+            if (!TryFindWorkbookByName(workBookName, out _workBook)) {
                 MessageBox.Show("Excel is not running or requested spreadsheet is not open, exiting now",
                     nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Environment.Exit(1);
