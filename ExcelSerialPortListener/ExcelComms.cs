@@ -94,8 +94,8 @@ namespace ExcelSerialPortListener {
             // supports accessibility. To do this, instantiate the
             // delegate and wrap the callback method in it, then call
             // EnumChildWindows, passing the delegate as the 2nd arg.
+            childWindow = IntPtr.Zero;
             if (mainWindow != IntPtr.Zero) {
-                var hwndChild = IntPtr.Zero;
 
                 bool EnumChildProc(IntPtr child, ref IntPtr lParam)
                 {
@@ -108,11 +108,7 @@ namespace ExcelSerialPortListener {
                     return true;
                 }
 
-                NativeMethods.EnumChildWindows(mainWindow, EnumChildProc, ref hwndChild);
-                childWindow = hwndChild;
-            }
-            else {
-                childWindow = IntPtr.Zero;
+                NativeMethods.EnumChildWindows(mainWindow, EnumChildProc, ref childWindow);
             }
             return childWindow != IntPtr.Zero;
         }
