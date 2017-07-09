@@ -16,11 +16,6 @@ namespace ExcelSerialPortListener {
 
         [STAThread]
         private static void Main([ItemNotNull] string[] args) {
-            void ErrorMessage(string message) {
-                MessageBox.Show(message,
-                    nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
             if (args.Length != 3) {
                 ErrorMessage("Expected 3 arguments: WorkbookName, WorkSheetName, Range");
                 return;
@@ -54,6 +49,10 @@ namespace ExcelSerialPortListener {
             }
 
             ScaleComms.ClosePort();
+        }
+
+        private static void ErrorMessage(string message) {
+            MessageBox.Show(message, nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private static void ListenerKeyBoardEvent() {
