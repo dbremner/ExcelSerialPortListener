@@ -8,19 +8,17 @@ using Validation;
 
 namespace ExcelSerialPortListener {
     internal sealed partial class ChildWindowFinder {
-        private readonly IntPtr mainWindow;
-
         [NotNull] private readonly ChildWindowCallback callback;
 
-        public ChildWindowFinder(IntPtr mainWindow, [NotNull] ChildWindowCallback callback) {
-            Requires.NotNull(mainWindow, nameof(mainWindow));
+        public ChildWindowFinder([NotNull] ChildWindowCallback callback) {
             Requires.NotNull(callback, nameof(callback));
 
-            this.mainWindow = mainWindow;
             this.callback = callback;
         }
 
-        public bool TryFindChildWindow(out IntPtr childWindow) {
+        public bool TryFindChildWindow(IntPtr mainWindow, out IntPtr childWindow) {
+            Requires.NotNull(mainWindow, nameof(mainWindow));
+
             childWindow = IntPtr.Zero;
             NativeMethods.EnumChildWindows(mainWindow, callback, ref childWindow);
             return childWindow != IntPtr.Zero;
