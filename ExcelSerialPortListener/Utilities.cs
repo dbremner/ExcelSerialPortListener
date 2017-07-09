@@ -18,7 +18,7 @@ namespace ExcelSerialPortListener {
         }
 
         [ContractAnnotation("=> halt")]
-        internal static void ErrorMessage([NotNull] string message) {
+        internal static void FatalError([NotNull] string message) {
             Requires.NotNullOrWhiteSpace(message, nameof(message));
 
             MessageBox.Show(message, nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
