@@ -84,8 +84,7 @@ namespace ExcelSerialPortListener {
             return false;
         }
 
-        internal bool TryWriteStringToWorksheet([NotNull] Excel.Workbook workBook, [NotNull] string valueToWrite)
-        {
+        internal bool TryWriteStringToWorksheet([NotNull] Excel.Workbook workBook, [NotNull] string valueToWrite) {
             Requires.NotNullOrWhiteSpace(valueToWrite, nameof(valueToWrite));
             Requires.NotNull(workBook, nameof(workBook));
             Requires.NotNull(workBook.Worksheets, nameof(workBook.Worksheets));
