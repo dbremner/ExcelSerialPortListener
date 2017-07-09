@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
 using JetBrains.Annotations;
+using static System.StringComparison;
 
 namespace ExcelSerialPortListener {
     internal class Program {
@@ -92,7 +94,7 @@ namespace ExcelSerialPortListener {
 
             Contract.EndContractBlock();
             var onlyDigits = s.Trim();
-            var indexOfSpaceG = onlyDigits.IndexOf(" g");
+            var indexOfSpaceG = onlyDigits.IndexOf(" g", Ordinal);
             if (indexOfSpaceG > 0) {
                 onlyDigits = onlyDigits.Substring(0, indexOfSpaceG);
             }
