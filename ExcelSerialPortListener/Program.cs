@@ -53,11 +53,13 @@ namespace ExcelSerialPortListener {
 
         private static void ErrorMessage([NotNull] string message) {
             Requires.NotNullOrWhiteSpace(message, nameof(message));
+
             MessageBox.Show(message, nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private static void ListenerKeyBoardEvent() {
             Requires.NotNull(ScaleComms, nameof(ScaleComms));
+
             while (true) {
                 if (Console.ReadKey(true).Key == ConsoleKey.Spacebar) {
                     Console.WriteLine("Saw pressed key!");
@@ -68,6 +70,7 @@ namespace ExcelSerialPortListener {
 
         private static void ListenToScale(double timeOutInSeconds = 30) {
             Requires.NotNull(Response, nameof(Response));
+
             var timeOut = DateTime.Now.AddSeconds(timeOutInSeconds);
             var isTimedOut = false;
             do {

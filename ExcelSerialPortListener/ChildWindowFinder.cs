@@ -15,6 +15,7 @@ namespace ExcelSerialPortListener {
         public ChildWindowFinder(IntPtr mainWindow, [NotNull] ChildWindowCallback callback) {
             Requires.NotNull(mainWindow, nameof(mainWindow));
             Requires.NotNull(callback, nameof(callback));
+
             this.mainWindow = mainWindow;
             this.callback = callback;
         }
