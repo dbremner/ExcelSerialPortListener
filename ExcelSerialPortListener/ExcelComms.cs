@@ -38,7 +38,7 @@ namespace ExcelSerialPortListener {
         /// </summary>
         /// <param name="target"></param>
         /// <returns>Excel.Workbook</returns>
-        public bool TryFindWorkbookByName(out Excel.Workbook target) {
+        public bool TryFindWorkbookByName([CanBeNull] out Excel.Workbook target) {
 
             var excelInstances = GetExcelInstances();
             if (excelInstances.Count == 0) {
