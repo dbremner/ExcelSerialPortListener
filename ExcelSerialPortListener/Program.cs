@@ -95,7 +95,7 @@ namespace ExcelSerialPortListener {
             return double.TryParse(onlyDigits, out _) ? onlyDigits : string.Empty;
         }
 
-        private static void SetResponse(string data) {
+        private static void SetResponse([NotNull] string data) {
             Response = data;
             Console.WriteLine("Received Response: {0}", Program.Response);
         }

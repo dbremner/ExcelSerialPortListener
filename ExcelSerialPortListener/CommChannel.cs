@@ -19,11 +19,11 @@ namespace ExcelSerialPortListener {
             //RtsEnable = true;
         };
 
-        private readonly Action<string> action;
+        [NotNull] private readonly Action<string> action;
 
         private bool IsOpen => CommPort.IsOpen;
 
-        public CommChannel(Action<string> action){
+        public CommChannel([NotNull] Action<string> action){
             ClosePort();
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
             this.action = action;
