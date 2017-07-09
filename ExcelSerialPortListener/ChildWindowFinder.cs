@@ -28,7 +28,7 @@ namespace ExcelSerialPortListener
             this.callback = callback;
         }
 
-        public static bool TryFindChildWindow(IntPtr mainWindow, out IntPtr childWindow) {
+        public bool TryFindChildWindow(out IntPtr childWindow) {
             //Console.WriteLine($"winHandle = {winHandle}");
             // We need to enumerate the child windows to find one that
             // supports accessibility.
