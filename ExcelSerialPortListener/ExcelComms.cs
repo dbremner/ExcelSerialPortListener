@@ -9,7 +9,7 @@ using Validation;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
-    public sealed partial class ExcelComms {
+    internal sealed partial class ExcelComms {
         private readonly Excel.Workbook _workBook;
         private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
         private Guid IID_IDispatch = new Guid(iidDispatchGuid);

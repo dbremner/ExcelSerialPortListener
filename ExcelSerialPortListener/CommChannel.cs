@@ -7,7 +7,7 @@ using JetBrains.Annotations;
 using Validation;
 
 namespace ExcelSerialPortListener {
-    public sealed class CommChannel {
+    internal sealed class CommChannel {
         [NotNull] private readonly SerialPort CommPort;
 
         private bool IsOpen => CommPort.IsOpen;
