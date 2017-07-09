@@ -43,11 +43,11 @@ namespace ExcelSerialPortListener {
         /// authorship, though I believe the author is Andrew Whitechapel. 
         /// @https://www.linkedin.com/in/andrew-whitechapel-083b75
         /// </summary>
-        /// <param name="callingWkbkName"></param>
+        /// <param name="workbookName"></param>
         /// <param name="target"></param>
         /// <returns>Excel.Workbook</returns>
-        private bool TryFindWorkbookByName([NotNull] string callingWkbkName, out Excel.Workbook target) {
-            Requires.NotNullOrWhiteSpace(callingWkbkName, nameof(callingWkbkName));
+        private bool TryFindWorkbookByName([NotNull] string workbookName, out Excel.Workbook target) {
+            Requires.NotNullOrWhiteSpace(workbookName, nameof(workbookName));
 
             var excelInstances = GetExcelInstances();
             if (excelInstances.Count == 0) {
@@ -71,7 +71,7 @@ namespace ExcelSerialPortListener {
                 // an Excel Application (using the implicit
                 // cast operator supplied in the PIA).
                 var workbooks = ptr.Application.Workbooks;
-                if (TryFindWorkbook(workbooks, callingWkbkName, out var victim)) {
+                if (TryFindWorkbook(workbooks, workbookName, out var victim)) {
                     target = victim;
                     return true;
                 }
