@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using System.Windows.Forms;
 using JetBrains.Annotations;
 using Validation;
 using static ExcelSerialPortListener.Utilities;
@@ -10,7 +9,6 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
     internal sealed partial class ExcelComms {
-        private readonly Excel.Workbook _workBook;
         [NotNull]
         private readonly ChildWindowFinder childWindowFinder = ChildWindowFinder.FindWindowClass("EXCEL7");
 
@@ -25,16 +23,10 @@ namespace ExcelSerialPortListener {
         [NotNull]
         private string RangeName => cellLocation.RangeName;
 
-        private Excel.Workbook WorkBook => _workBook;
-
         public ExcelComms([NotNull] CellLocation cellLocation) {
             Requires.NotNull(cellLocation, nameof(cellLocation));
 
             this.cellLocation = cellLocation;
-
-            if (!TryFindWorkbookByName(out _workBook)) {
-                FatalError("Excel is not running or requested spreadsheet is not open, exiting now");
-            }
         }
 
         /// <summary>
@@ -46,7 +38,7 @@ namespace ExcelSerialPortListener {
         /// </summary>
         /// <param name="target"></param>
         /// <returns>Excel.Workbook</returns>
-        private bool TryFindWorkbookByName(out Excel.Workbook target) {
+        public bool TryFindWorkbookByName(out Excel.Workbook target) {
 
             var excelInstances = GetExcelInstances();
             if (excelInstances.Count == 0) {
@@ -90,20 +82,6 @@ namespace ExcelSerialPortListener {
             }
             target = null;
             return false;
-        }
-
-        internal bool TryWriteStringToWorksheet([NotNull] string valueToWrite) {
-            Requires.NotNullOrWhiteSpace(valueToWrite, nameof(valueToWrite));
-            Requires.NotNull(WorkBook, nameof(WorkBook));
-            Requires.NotNull(WorkBook.Worksheets, nameof(WorkBook.Worksheets));
-
-            try {
-                WorkBook.Worksheets[WorkSheetName].Range[RangeName].Value = valueToWrite;
-                return true;
-            }
-            catch (Exception) {
-                return false;
-            }
         }
 
         internal bool TryWriteStringToWorksheet([NotNull] Excel.Workbook workBook, [NotNull] string valueToWrite)

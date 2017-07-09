@@ -43,7 +43,11 @@ namespace ExcelSerialPortListener {
                 }
 
                 var excel = new ExcelComms(cellLocation);
-                excel.TryWriteStringToWorksheet(Response);
+
+                if (!excel.TryFindWorkbookByName(out var workBook)) {
+                    FatalError("Excel is not running or requested spreadsheet is not open, exiting now");
+                }
+                excel.TryWriteStringToWorksheet(workBook, Response);
             }
 
             ScaleComms.ClosePort();
