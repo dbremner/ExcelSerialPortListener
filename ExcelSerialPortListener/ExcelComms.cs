@@ -79,7 +79,7 @@ namespace ExcelSerialPortListener {
             return false;
         }
 
-        private bool TryFindWorkbook(Excel.Workbooks workbooks, string name, out Excel.Workbook target) {
+        private bool TryFindWorkbook([NotNull] Excel.Workbooks workbooks, [NotNull] string name, [CanBeNull] out Excel.Workbook target) {
             foreach (Excel.Workbook workbook in workbooks) {
                 if (workbook.Name == name) {
                     target = workbook;
