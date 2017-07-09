@@ -3,8 +3,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace ExcelSerialPortListener
-{
+namespace ExcelSerialPortListener {
     public sealed partial class ExcelComms {
         [SuppressUnmanagedCodeSecurity]
         internal static class NativeMethods {

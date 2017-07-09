@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExcelSerialPortListener
-{
-    internal sealed partial class ChildWindowFinder
-    {
+namespace ExcelSerialPortListener {
+    internal sealed partial class ChildWindowFinder {
         private readonly IntPtr mainWindow;
 
         private readonly ChildWindowCallback callback;
 
-        public ChildWindowFinder(IntPtr mainWindow, ChildWindowCallback callback)
-        {
+        public ChildWindowFinder(IntPtr mainWindow, ChildWindowCallback callback) {
             this.mainWindow = mainWindow;
             this.callback = callback;
         }

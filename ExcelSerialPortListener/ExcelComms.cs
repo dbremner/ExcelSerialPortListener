@@ -89,11 +89,9 @@ namespace ExcelSerialPortListener {
             return false;
         }
 
-        private static bool EnumChildProc(IntPtr child, ref IntPtr lParam)
-        {
+        private static bool EnumChildProc(IntPtr child, ref IntPtr lParam) {
             var className = PInvoke.User32.GetClassName(child);
-            if (className == "EXCEL7")
-            {
+            if (className == "EXCEL7") {
                 lParam = child;
                 return false;
             }
