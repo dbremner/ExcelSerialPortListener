@@ -17,23 +17,24 @@ namespace ExcelSerialPortListener {
         [NotNull]
         private readonly WindowFinder windowFinder = new WindowFinder();
 
-        [NotNull]
-        private string WorkSheetName { get; }
+        [NotNull] private readonly CellLocation cellLocation;
 
         [NotNull]
-        private string RangeName { get; }
+        private string WorkSheetName => cellLocation.WorkSheetName;
+
+        [NotNull]
+        private string RangeName => cellLocation.RangeName;
 
         private Excel.Workbook WorkBook => _workBook;
 
-        public ExcelComms([NotNull] string workBookName, [NotNull] string workSheetName, [NotNull] string rangeName) {
-            Requires.NotNullOrWhiteSpace(workBookName, nameof(workBookName));
-            Requires.NotNullOrWhiteSpace(workSheetName, nameof(workSheetName));
-            Requires.NotNullOrWhiteSpace(rangeName, nameof(rangeName));
+        public ExcelComms([NotNull] CellLocation cellLocation) {
+            Requires.NotNull(cellLocation, nameof(cellLocation));
 
-            if (!TryFindWorkbookByName(workBookName, out _workBook)) {
+            this.cellLocation = cellLocation;
+
+            if (!TryFindWorkbookByName(out _workBook)) {
                 FatalError("Excel is not running or requested spreadsheet is not open, exiting now");
             }
-            (WorkSheetName, RangeName) = (workSheetName, rangeName);
         }
 
         /// <summary>
@@ -43,11 +44,9 @@ namespace ExcelSerialPortListener {
         /// authorship, though I believe the author is Andrew Whitechapel. 
         /// @https://www.linkedin.com/in/andrew-whitechapel-083b75
         /// </summary>
-        /// <param name="workbookName"></param>
         /// <param name="target"></param>
         /// <returns>Excel.Workbook</returns>
-        private bool TryFindWorkbookByName([NotNull] string workbookName, out Excel.Workbook target) {
-            Requires.NotNullOrWhiteSpace(workbookName, nameof(workbookName));
+        private bool TryFindWorkbookByName(out Excel.Workbook target) {
 
             var excelInstances = GetExcelInstances();
             if (excelInstances.Count == 0) {
@@ -71,7 +70,7 @@ namespace ExcelSerialPortListener {
                 // an Excel Application (using the implicit
                 // cast operator supplied in the PIA).
                 var workbooks = ptr.Application.Workbooks;
-                if (TryFindWorkbook(workbooks, workbookName, out var victim)) {
+                if (TryFindWorkbook(workbooks, out var victim)) {
                     target = victim;
                     return true;
                 }
@@ -80,12 +79,11 @@ namespace ExcelSerialPortListener {
             return false;
         }
 
-        private bool TryFindWorkbook([NotNull] Excel.Workbooks workbooks, [NotNull] string name, [CanBeNull] out Excel.Workbook target) {
+        private bool TryFindWorkbook([NotNull] Excel.Workbooks workbooks, [CanBeNull] out Excel.Workbook target) {
             Requires.NotNull(workbooks, nameof(workbooks));
-            Requires.NotNullOrWhiteSpace(name, nameof(name));
 
             foreach (Excel.Workbook workbook in workbooks) {
-                if (workbook.Name == name) {
+                if (workbook.Name == cellLocation.WorkBookName) {
                     target = workbook;
                     return true;
                 }

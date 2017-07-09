@@ -26,6 +26,8 @@ namespace ExcelSerialPortListener {
 
             var (workbookName, worksheetName, rangeName) = (args[0], args[1], args[2]);
 
+            var cellLocation = new CellLocation(workbookName, worksheetName, rangeName);
+
             bool CommsAreOpen = ScaleComms.OpenPort();
             if (CommsAreOpen) {
                 var mainThread = new Thread(() => ListenToScale());
@@ -42,7 +44,7 @@ namespace ExcelSerialPortListener {
                     } 
                 }
 
-                var excel = new ExcelComms(workbookName, worksheetName, rangeName);
+                var excel = new ExcelComms(cellLocation);
                 excel.TryWriteStringToWorksheet(Response);
             }
 

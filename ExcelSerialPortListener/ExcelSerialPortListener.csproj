@@ -148,6 +148,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CellLocation.cs" />
     <Compile Include="ChildWindowFinder.cs" />
     <Compile Include="ChildWindowFinder.NativeMethods.cs" />
     <Compile Include="ChildWindowFinder.WindowClassSearcher.cs" />
