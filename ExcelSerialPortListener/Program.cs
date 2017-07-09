@@ -58,12 +58,12 @@ namespace ExcelSerialPortListener {
 
         public static void ListenerKeyBoardEvent() {
             Contract.Requires(ScaleComms != null);
-            do {
+            while (true) {
                 if (Console.ReadKey(true).Key == ConsoleKey.Spacebar) {
                     Console.WriteLine("Saw pressed key!");
                     ScaleComms.WriteData("P\r");
                 }
-            } while (true);
+            }
         }
 
         public static void ListenToScale(double timeOutInSeconds = 30) {
