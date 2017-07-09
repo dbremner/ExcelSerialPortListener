@@ -89,12 +89,9 @@ namespace ExcelSerialPortListener {
                     // into the native object model.
                     //Console.WriteLine($"hwndChild = {hwndChild}");
                     if (TryFindAccessibleChildWindow(winHandle, out var hwndChild)) {
-                        const uint OBJID_NATIVEOM = 0xFFFFFFF0;
 
-                        Excel.Window ptr = null;
-                        HResult hr = NativeMethods.AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, ref ptr);
                         //Console.WriteLine($"hr ptr = {hr}");
-                        if (hr.Succeeded) {
+                        if (TryGetExcelWindow(hwndChild, out Excel.Window ptr)) {
                             // If we successfully got a native OM
                             // IDispatch pointer, we can QI this for
                             // an Excel Application (using the implicit
@@ -130,6 +127,15 @@ namespace ExcelSerialPortListener {
                 childWindow = hwndChild;
             }
             return childWindow != IntPtr.Zero;
+        }
+
+        private bool TryGetExcelWindow(IntPtr hwndChild, out Excel.Window ptr)
+        {
+            const uint OBJID_NATIVEOM = 0xFFFFFFF0;
+
+            //Excel.Window ptr = null;
+            HResult hr = NativeMethods.AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, out ptr);
+            return hr.Succeeded;
         }
 
         internal bool TryWriteStringToWorksheet([NotNull] string valueToWrite) {
