@@ -80,32 +80,33 @@ namespace ExcelSerialPortListener {
             foreach (var p in excelInstances) {
                 Contract.Assume(p != null);
                 var winHandle = p.MainWindowHandle;
-                if (winHandle != IntPtr.Zero) {
-
-                    // If we found an accessible child window, call
-                    // AccessibleObjectFromWindow, passing the constant
-                    // OBJID_NATIVEOM (defined in winuser.h) and
-                    // IID_IDispatch - we want an IDispatch pointer
-                    // into the native object model.
-                    //Console.WriteLine($"hwndChild = {hwndChild}");
-                    if (TryFindAccessibleChildWindow(winHandle, out var hwndChild)) {
-
-                        //Console.WriteLine($"hr ptr = {hr}");
-                        if (TryGetExcelWindow(hwndChild, out Excel.Window ptr)) {
-                            // If we successfully got a native OM
-                            // IDispatch pointer, we can QI this for
-                            // an Excel Application (using the implicit
-                            // cast operator supplied in the PIA).
-                            Contract.Assume(ptr != null);
-                            var app = ptr.Application;
-                            foreach (Excel.Workbook wkbk in app.Workbooks) {
-                                if (wkbk.Name == callingWkbkName) {
-                                    //Console.WriteLine($"Workbook name = {wkbk.Name}");
-                                    target = wkbk;
-                                    return true;
-                                }
-                            }
-                        }
+                if (winHandle == IntPtr.Zero) {
+                    continue;
+                }
+                // If we found an accessible child window, call
+                // AccessibleObjectFromWindow, passing the constant
+                // OBJID_NATIVEOM (defined in winuser.h) and
+                // IID_IDispatch - we want an IDispatch pointer
+                // into the native object model.
+                //Console.WriteLine($"hwndChild = {hwndChild}");
+                if (!TryFindAccessibleChildWindow(winHandle, out var hwndChild)) {
+                    continue;
+                }
+                //Console.WriteLine($"hr ptr = {hr}");
+                if (!TryGetExcelWindow(hwndChild, out Excel.Window ptr)) {
+                    continue;
+                }
+                // If we successfully got a native OM
+                // IDispatch pointer, we can QI this for
+                // an Excel Application (using the implicit
+                // cast operator supplied in the PIA).
+                Contract.Assume(ptr != null);
+                var app = ptr.Application;
+                foreach (Excel.Workbook wkbk in app.Workbooks) {
+                    if (wkbk.Name == callingWkbkName) {
+                        //Console.WriteLine($"Workbook name = {wkbk.Name}");
+                        target = wkbk;
+                        return true;
                     }
                 }
             }
