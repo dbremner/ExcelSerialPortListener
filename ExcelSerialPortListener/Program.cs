@@ -12,7 +12,7 @@ namespace ExcelSerialPortListener {
         [NotNull]
         public static string Response { get; set; } = string.Empty;
         private static bool _gotResponse;
-        private static CommChannel ScaleComms { get; } = new CommChannel();
+        private static CommChannel ScaleComms { get; } = new CommChannel(SetResponse);
 
         [STAThread]
         private static void Main([ItemNotNull] string[] args) {
@@ -93,6 +93,11 @@ namespace ExcelSerialPortListener {
             }
 
             return double.TryParse(onlyDigits, out _) ? onlyDigits : string.Empty;
+        }
+
+        private static void SetResponse(string data) {
+            Response = data;
+            Console.WriteLine("Received Response: {0}", Program.Response);
         }
     }
 }

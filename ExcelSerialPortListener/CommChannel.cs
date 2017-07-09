@@ -23,15 +23,6 @@ namespace ExcelSerialPortListener {
 
         private bool IsOpen => CommPort.IsOpen;
 
-        public CommChannel() {
-            ClosePort();
-            CommPort.DataReceived += SerialDeviceDataReceivedHandler;
-            action = (data) => {
-                Program.Response = data;
-                Console.WriteLine("Received Response: {0}", Program.Response);
-            };
-        }
-
         public CommChannel(Action<string> action){
             ClosePort();
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
