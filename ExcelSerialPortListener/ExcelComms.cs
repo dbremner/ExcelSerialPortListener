@@ -15,7 +15,7 @@ namespace ExcelSerialPortListener {
         private readonly ChildWindowFinder childWindowFinder = ChildWindowFinder.FindWindowClass("EXCEL7");
 
         [NotNull]
-        private readonly ApplicationFinder applicationFinder = new ApplicationFinder();
+        private readonly WindowFinder windowFinder = new WindowFinder();
 
         [NotNull]
         private string WorkSheetName { get; }
@@ -63,7 +63,7 @@ namespace ExcelSerialPortListener {
                 if (!childWindowFinder.TryFindChildWindow(winHandle, out var hwndChild)) {
                     continue;
                 }
-                if (!applicationFinder.TryGetExcelWindow(hwndChild, out Excel.Window ptr)) {
+                if (!windowFinder.TryGetExcelWindow(hwndChild, out Excel.Window ptr)) {
                     continue;
                 }
                 // If we successfully got a native OM

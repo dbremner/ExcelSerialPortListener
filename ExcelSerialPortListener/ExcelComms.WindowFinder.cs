@@ -4,7 +4,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ExcelSerialPortListener {
     internal sealed partial class ExcelComms {
-        private sealed class ApplicationFinder {
+        private sealed class WindowFinder {
             private Guid IID_IDispatch = new Guid(iidDispatchGuid);
             private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
 
