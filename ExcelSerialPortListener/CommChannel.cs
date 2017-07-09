@@ -26,6 +26,10 @@ namespace ExcelSerialPortListener {
         public CommChannel() {
             ClosePort();
             CommPort.DataReceived += SerialDeviceDataReceivedHandler;
+            action = (data) => {
+                Program.Response = data;
+                Console.WriteLine("Received Response: {0}", Program.Response);
+            };
         }
 
         public CommChannel(Action<string> action){
@@ -84,8 +88,7 @@ namespace ExcelSerialPortListener {
             Requires.NotNull(sender, nameof(sender));
 
             var sp = (SerialPort)sender;
-            Program.Response = sp.ReadExisting();
-            Console.WriteLine("Received Response: {0}", Program.Response);
+            action(sp.ReadExisting());
         }
     }
 }
