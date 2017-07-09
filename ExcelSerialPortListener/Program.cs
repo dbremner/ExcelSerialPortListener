@@ -10,7 +10,7 @@ namespace ExcelSerialPortListener {
         [NotNull]
         public static string Response { get; set; } = string.Empty;
         private static bool _gotResponse;
-        private static CommChannel ScaleComms { get; set; }
+        private static CommChannel ScaleComms { get; } = new CommChannel();
 
         [STAThread]
         private static void Main([ItemNotNull] string[] args) {
@@ -30,8 +30,6 @@ namespace ExcelSerialPortListener {
             }
 
             var (workbookName, worksheetName, rangeName) = (args[0], args[1], args[2]);
-
-            ScaleComms = new CommChannel();
 
             bool CommsAreOpen = ScaleComms.OpenPort();
             if (CommsAreOpen) {
