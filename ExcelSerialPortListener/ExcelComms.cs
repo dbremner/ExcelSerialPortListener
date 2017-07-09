@@ -15,12 +15,12 @@ namespace ExcelSerialPortListener {
         private Guid IID_IDispatch = new Guid(iidDispatchGuid);
 
         [NotNull]
-        public string WorkSheetName { get; }
+        private string WorkSheetName { get; }
 
         [NotNull]
-        public string RangeName { get; }
+        private string RangeName { get; }
 
-        public Excel.Workbook WorkBook
+        private Excel.Workbook WorkBook
         {
             get { return _workBook; }
         }
@@ -65,7 +65,7 @@ namespace ExcelSerialPortListener {
         /// <param name="callingWkbkName"></param>
         /// <param name="target"></param>
         /// <returns>Excel.Workbook</returns>
-        public bool TryFindWorkbookByName([NotNull] string callingWkbkName, out Excel.Workbook target) {
+        private bool TryFindWorkbookByName([NotNull] string callingWkbkName, out Excel.Workbook target) {
             if (String.IsNullOrWhiteSpace(callingWkbkName)) {
                 throw new ArgumentNullException(nameof(callingWkbkName));
             }
@@ -132,7 +132,7 @@ namespace ExcelSerialPortListener {
             return childWindow != IntPtr.Zero;
         }
 
-        public bool TryWriteStringToWorksheet([NotNull] string valueToWrite) {
+        internal bool TryWriteStringToWorksheet([NotNull] string valueToWrite) {
             if (String.IsNullOrWhiteSpace(valueToWrite)) {
                 throw new ArgumentNullException(nameof(valueToWrite));
             }
@@ -150,7 +150,7 @@ namespace ExcelSerialPortListener {
             }
         }
 
-        public static bool EnumChildProc(IntPtr hwndChild, ref IntPtr lParam) {
+        private static bool EnumChildProc(IntPtr hwndChild, ref IntPtr lParam) {
             Contract.Requires(hwndChild != IntPtr.Zero);
             var className = PInvoke.User32.GetClassName(hwndChild);
             if (className == "EXCEL7") {

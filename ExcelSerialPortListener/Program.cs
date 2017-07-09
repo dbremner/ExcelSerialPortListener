@@ -54,7 +54,7 @@ namespace ExcelSerialPortListener {
             ScaleComms.ClosePort();
         }
 
-        public static void ListenerKeyBoardEvent() {
+        private static void ListenerKeyBoardEvent() {
             Contract.Requires(ScaleComms != null);
             while (true) {
                 if (Console.ReadKey(true).Key == ConsoleKey.Spacebar) {
@@ -64,11 +64,11 @@ namespace ExcelSerialPortListener {
             }
         }
 
-        public static void ListenToScale(double timeOutInSeconds = 30) {
+        private static void ListenToScale(double timeOutInSeconds = 30) {
             ListenToScale(DateTime.Now, timeOutInSeconds);
         }
 
-        public static void ListenToScale(DateTime time, double timeOutInSeconds = 30) {
+        private static void ListenToScale(DateTime time, double timeOutInSeconds = 30) {
             Contract.Requires(Response != null);
             var timeOut = time.AddSeconds(timeOutInSeconds);
             var isTimedOut = false;

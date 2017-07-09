@@ -9,7 +9,8 @@ using JetBrains.Annotations;
 namespace ExcelSerialPortListener {
     public sealed class CommChannel {
         [NotNull] private readonly SerialPort CommPort;
-        public bool IsOpen => CommPort.IsOpen;
+
+        private bool IsOpen => CommPort.IsOpen;
         //public string Response { get; set; } = string.Empty;
 
     //=== Constructor(s) ===
@@ -38,13 +39,13 @@ namespace ExcelSerialPortListener {
         }
 
         // === Methods ===
-        public void ClosePort() {
+        internal void ClosePort() {
             if (IsOpen) {
                 CommPort.Close();
             }
         }
 
-        public bool OpenPort() {
+        internal bool OpenPort() {
             bool result = true;
             void HandleException() => result = false;
             try {
@@ -90,7 +91,7 @@ namespace ExcelSerialPortListener {
         //    }
         //}
 
-        public void WriteData([NotNull] string dataString) {
+        internal void WriteData([NotNull] string dataString) {
             if (dataString == null) {
                 throw new ArgumentNullException(nameof(dataString));
             }
