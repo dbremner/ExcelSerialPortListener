@@ -155,7 +155,7 @@
     <Compile Include="ChildWindowCallback.cs" />
     <Compile Include="ExcelComms.WindowFinder.cs" />
     <Compile Include="ExcelComms.cs" />
-    <Compile Include="ExcelComms.NativeMethods.cs" />
+    <Compile Include="ExcelComms.WindowFinder.NativeMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
