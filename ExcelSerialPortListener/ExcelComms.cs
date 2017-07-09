@@ -13,6 +13,8 @@ namespace ExcelSerialPortListener {
         private readonly Excel.Workbook _workBook;
         [NotNull]
         private readonly ChildWindowFinder childWindowFinder = ChildWindowFinder.FindWindowClass("EXCEL7");
+
+        [NotNull]
         private readonly ApplicationFinder applicationFinder = new ApplicationFinder();
 
         [NotNull]
