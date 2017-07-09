@@ -11,7 +11,6 @@ namespace ExcelSerialPortListener {
         [NotNull] private readonly SerialPort CommPort;
 
         private bool IsOpen => CommPort.IsOpen;
-        //public string Response { get; set; } = string.Empty;
 
     //=== Constructor(s) ===
 
@@ -96,19 +95,6 @@ namespace ExcelSerialPortListener {
 
             CommPort.Write(dataString);
         }
-
-        //private string OnlyDigits(string s) {
-        //    string onlyDigits = s.Trim();
-        //    int indexOfSpaceG = onlyDigits.IndexOf(" g");
-        //    if (indexOfSpaceG > 0)
-        //        onlyDigits = onlyDigits.Substring(0, indexOfSpaceG);
-        //    double tester;
-        //    if (double.TryParse(onlyDigits, out tester)) {
-        //        return onlyDigits;
-        //    } else {
-        //        return string.Empty;
-        //    }
-        //}
 
         private void SerialDeviceDataReceivedHandler([NotNull] object sender, [NotNull] SerialDataReceivedEventArgs e) {
             Requires.NotNull(sender, nameof(sender));

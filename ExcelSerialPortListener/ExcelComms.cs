@@ -112,7 +112,6 @@ namespace ExcelSerialPortListener {
         {
             const uint OBJID_NATIVEOM = 0xFFFFFFF0;
 
-            //Excel.Window ptr = null;
             HResult hr = NativeMethods.AccessibleObjectFromWindow(hwndChild, OBJID_NATIVEOM, ref IID_IDispatch, out ptr);
             return hr.Succeeded;
         }
