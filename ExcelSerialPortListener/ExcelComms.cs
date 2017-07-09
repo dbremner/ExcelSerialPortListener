@@ -65,14 +65,7 @@ namespace ExcelSerialPortListener {
             foreach (var p in excelInstances) {
                 Contract.Assume(p != null);
                 var winHandle = p.MainWindowHandle;
-                //Console.WriteLine($"winHandle = {winHandle}");
-                // We need to enumerate the child windows to find one that
-                // supports accessibility. To do this, instantiate the
-                // delegate and wrap the callback method in it, then call
-                // EnumChildWindows, passing the delegate as the 2nd arg.
                 if (winHandle != IntPtr.Zero) {
-                    var hwndChild = IntPtr.Zero;
-                    NativeMethods.EnumChildWindows(winHandle, EnumChildProc, ref hwndChild);
 
                     // If we found an accessible child window, call
                     // AccessibleObjectFromWindow, passing the constant
@@ -80,7 +73,7 @@ namespace ExcelSerialPortListener {
                     // IID_IDispatch - we want an IDispatch pointer
                     // into the native object model.
                     //Console.WriteLine($"hwndChild = {hwndChild}");
-                    if (hwndChild != IntPtr.Zero) {
+                    if (TryFindAccessibleChildWindow(winHandle, out var hwndChild)) {
                         const uint OBJID_NATIVEOM = 0xFFFFFFF0;
 
                         Excel.Window ptr = null;
@@ -107,6 +100,21 @@ namespace ExcelSerialPortListener {
             //Console.WriteLine($"Failed to find Workbook named '{callingWkbkName}'");
             target = null;
             return false;
+        }
+
+        private bool TryFindAccessibleChildWindow(IntPtr mainWindow, out IntPtr childWindow) {
+            childWindow = IntPtr.Zero;
+            //Console.WriteLine($"winHandle = {winHandle}");
+            // We need to enumerate the child windows to find one that
+            // supports accessibility. To do this, instantiate the
+            // delegate and wrap the callback method in it, then call
+            // EnumChildWindows, passing the delegate as the 2nd arg.
+            if (mainWindow != IntPtr.Zero) {
+                var hwndChild = IntPtr.Zero;
+                NativeMethods.EnumChildWindows(mainWindow, EnumChildProc, ref hwndChild);
+                childWindow = hwndChild;
+            }
+            return childWindow != IntPtr.Zero;
         }
 
         public bool TryWriteStringToWorksheet(string valueToWrite) {
