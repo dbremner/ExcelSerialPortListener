@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using PInvoke;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -8,7 +9,8 @@ namespace ExcelSerialPortListener {
             private Guid IID_IDispatch = new Guid(iidDispatchGuid);
             private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
 
-            public bool TryFindExcelWindow(IntPtr hwndChild, out Excel.Window ptr) {
+            [ContractAnnotation("=> false, ptr:null; => true, ptr:notnull")]
+            public bool TryFindExcelWindow(IntPtr hwndChild, [CanBeNull] out Excel.Window ptr) {
                 // If we found an accessible child window, call
                 // AccessibleObjectFromWindow, passing the constant
                 // OBJID_NATIVEOM (defined in winuser.h) and
