@@ -52,6 +52,7 @@ namespace ExcelSerialPortListener {
         }
 
         private static void ErrorMessage([NotNull] string message) {
+            Requires.NotNullOrWhiteSpace(message, nameof(message));
             MessageBox.Show(message, nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
