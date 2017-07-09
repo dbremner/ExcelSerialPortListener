@@ -14,15 +14,18 @@ namespace ExcelSerialPortListener {
 
         [STAThread]
         private static void Main([ItemNotNull] string[] args) {
-            if (args.Length != 3) {
-                MessageBox.Show("Expected 3 arguments: WorkbookName, WorkSheetName, Range",
+            void ErrorMessage(string message) {
+                MessageBox.Show(message,
                     nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            if (args.Length != 3) {
+                ErrorMessage("Expected 3 arguments: WorkbookName, WorkSheetName, Range");
                 return;
             }
 
             if (Process.GetProcessesByName("excel").Length == 0) {
-                MessageBox.Show("Excel is not running, please open Excel with the appropriate spreadsheet.",
-                    nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ErrorMessage("Excel is not running, please open Excel with the appropriate spreadsheet.");
                 return;
             }
 
