@@ -34,8 +34,10 @@ namespace ExcelSerialPortListener {
                 FatalError(Resources.FailedToOpenSerialPortConnection);
             }
 
+            var keyboardListener = new KeyboardListener(ScaleComms);
+
             var mainThread = new Thread(() => ListenToScale());
-            var consoleKeyListener = new Thread(ListenerKeyBoardEvent);
+            var consoleKeyListener = new Thread(keyboardListener.ListenerKeyBoardEvent);
 
             consoleKeyListener.Start();
             mainThread.Start();
@@ -59,17 +61,6 @@ namespace ExcelSerialPortListener {
             }
 
             ScaleComms.ClosePort();
-        }
-
-        private static void ListenerKeyBoardEvent() {
-            Requires.NotNull(ScaleComms, nameof(ScaleComms));
-
-            while (true) {
-                if (Console.ReadKey(true).Key == ConsoleKey.Spacebar) {
-                    Console.WriteLine(Resources.SawPressedKey);
-                    ScaleComms.WriteData("P\r");
-                }
-            }
         }
 
         private static void ListenToScale(double timeOutInSeconds = 30) {
