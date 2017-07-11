@@ -9,13 +9,13 @@ namespace ExcelSerialPortListener
 {
     internal sealed class KeyboardListener
     {
-        public KeyboardListener(CommChannel channel)
-        {
-            Requires.NotNull(ScaleComms, nameof(ScaleComms));
-            ScaleComms = channel;
-        }
+        private readonly Action action;
 
-        private CommChannel ScaleComms { get; }
+        public KeyboardListener(Action action)
+        {
+            Requires.NotNull(action, nameof(action));
+            this.action = action;
+        }
 
         internal void ListenerKeyBoardEvent()
         {
@@ -24,7 +24,7 @@ namespace ExcelSerialPortListener
                 if (Console.ReadKey(true).Key == ConsoleKey.Spacebar)
                 {
                     Console.WriteLine(Resources.SawPressedKey);
-                    ScaleComms.WriteData("P\r");
+                    action();
                 }
             }
         }

@@ -34,7 +34,7 @@ namespace ExcelSerialPortListener {
                 FatalError(Resources.FailedToOpenSerialPortConnection);
             }
 
-            var keyboardListener = new KeyboardListener(ScaleComms);
+            var keyboardListener = new KeyboardListener(() => ScaleComms.WriteData("P\r"));
 
             var mainThread = new Thread(() => ListenToScale());
             var consoleKeyListener = new Thread(keyboardListener.ListenerKeyBoardEvent);
