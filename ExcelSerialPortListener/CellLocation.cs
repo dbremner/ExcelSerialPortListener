@@ -3,15 +3,6 @@ using Validation;
 
 namespace ExcelSerialPortListener {
     internal sealed class CellLocation {
-        [NotNull]
-        public string WorkBookName { get; }
-
-        [NotNull]
-        public string WorkSheetName { get; }
-
-        [NotNull]
-        public string RangeName { get; }
-
         public CellLocation([NotNull] string workBookName, [NotNull] string workSheetName, [NotNull] string rangeName) {
             Requires.NotNullOrWhiteSpace(workBookName, nameof(workBookName));
             Requires.NotNullOrWhiteSpace(workSheetName, nameof(workSheetName));
@@ -20,6 +11,15 @@ namespace ExcelSerialPortListener {
             this.WorkSheetName = workSheetName;
             this.RangeName = rangeName;
         }
+
+        [NotNull]
+        public string WorkBookName { get; }
+
+        [NotNull]
+        public string WorkSheetName { get; }
+
+        [NotNull]
+        public string RangeName { get; }
 
         public void Deconstruct(
             [NotNull] out string workBookName,

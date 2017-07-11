@@ -3,14 +3,16 @@ using System.Globalization;
 using System.Threading;
 using JetBrains.Annotations;
 using Validation;
-using static System.StringComparison;
 using static ExcelSerialPortListener.Utilities;
+using static System.StringComparison;
 
 namespace ExcelSerialPortListener {
     internal static class Program {
+        private static bool gotResponse;
+
         [NotNull]
         private static string Response { get; set; } = string.Empty;
-        private static bool _gotResponse;
+
         private static CommChannel ScaleComms { get; } = new CommChannel(SetResponse);
 
         [STAThread]
@@ -26,10 +28,11 @@ namespace ExcelSerialPortListener {
 
             var cellLocation = new CellLocation(workBookName: args[0], workSheetName: args[1], rangeName: args[2]);
 
-            bool CommsAreOpen = ScaleComms.OpenPort();
-            if (!CommsAreOpen) {
+            bool commsAreOpen = ScaleComms.OpenPort();
+            if (!commsAreOpen) {
                 FatalError("Failed to open serial port connection");
             }
+
             var mainThread = new Thread(() => ListenToScale());
             var consoleKeyListener = new Thread(ListenerKeyBoardEvent);
 
@@ -37,7 +40,7 @@ namespace ExcelSerialPortListener {
             mainThread.Start();
 
             while (true) {
-                if (_gotResponse) {
+                if (gotResponse) {
                     mainThread.Abort();
                     consoleKeyListener.Abort();
                     break;
@@ -49,6 +52,7 @@ namespace ExcelSerialPortListener {
             if (!excel.TryFindWorkbookByName(out var workBook)) {
                 FatalError("Excel is not running or requested spreadsheet is not open, exiting now");
             }
+
             if (!excel.TryWriteStringToWorksheet(workBook, Response)) {
                 FatalError("Failed to write to spreadsheet");
             }
@@ -82,7 +86,7 @@ namespace ExcelSerialPortListener {
             } while (!isTimedOut);
 
             Response = isTimedOut ? "Timed Out" : OnlyDigits(Response);
-            _gotResponse = true;
+            gotResponse = true;
         }
 
         [Pure]

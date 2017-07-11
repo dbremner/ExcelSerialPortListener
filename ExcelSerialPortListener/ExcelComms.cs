@@ -6,8 +6,8 @@ using JetBrains.Annotations;
 using Validation;
 using static ExcelSerialPortListener.Utilities;
 using Excel = Microsoft.Office.Interop.Excel;
-// ReSharper disable HeapView.ObjectAllocation.Possible
 
+// ReSharper disable HeapView.ObjectAllocation.Possible
 namespace ExcelSerialPortListener {
     internal sealed partial class ExcelComms {
         [NotNull]
@@ -16,7 +16,8 @@ namespace ExcelSerialPortListener {
         [NotNull]
         private readonly WindowFinder windowFinder = new WindowFinder();
 
-        [NotNull] private readonly CellLocation cellLocation;
+        [NotNull]
+        private readonly CellLocation cellLocation;
 
         public ExcelComms([NotNull] CellLocation cellLocation) {
             Requires.NotNull(cellLocation, nameof(cellLocation));
@@ -28,14 +29,13 @@ namespace ExcelSerialPortListener {
         /// A function that returns the Excel.Workbook object that matches the passed Excel workbook file name.
         /// This function is substantially based on open-source code, not authored by me.
         /// However, none of the several sources that had this code clearly claimed original
-        /// authorship, though I believe the author is Andrew Whitechapel. 
+        /// authorship, though I believe the author is Andrew Whitechapel.
         /// @https://www.linkedin.com/in/andrew-whitechapel-083b75
         /// </summary>
-        /// <param name="target"></param>
+        /// <param name="target">matching workbook or null</param>
         /// <returns>Excel.Workbook</returns>
         [ContractAnnotation("=> false, target:null; => true, target:notnull")]
         public bool TryFindWorkbookByName([CanBeNull] out Excel.Workbook target) {
-
             var excelInstances = GetExcelInstances();
             if (excelInstances.Count == 0) {
                 target = null;
@@ -47,12 +47,15 @@ namespace ExcelSerialPortListener {
                 if (winHandle == IntPtr.Zero) {
                     continue;
                 }
+
                 if (!childWindowFinder.TryFindChildWindow(winHandle, out var hwndChild)) {
                     continue;
                 }
+
                 if (!windowFinder.TryFindExcelWindow(hwndChild, out Excel.Window ptr)) {
                     continue;
                 }
+
                 // If we successfully got a native OM
                 // IDispatch pointer, we can QI this for
                 // an Excel Application (using the implicit
@@ -63,8 +66,26 @@ namespace ExcelSerialPortListener {
                     return true;
                 }
             }
+
             target = null;
             return false;
+        }
+
+        internal bool TryWriteStringToWorksheet([NotNull] Excel.Workbook workBook, [NotNull] string valueToWrite) {
+            Requires.NotNullOrWhiteSpace(valueToWrite, nameof(valueToWrite));
+            Requires.NotNull(workBook, nameof(workBook));
+            Requires.NotNull(workBook.Worksheets, nameof(workBook.Worksheets));
+
+            try
+            {
+                var(_, workSheetName, rangeName) = cellLocation;
+                workBook.Worksheets[workSheetName].Range[rangeName].Value = valueToWrite;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         [ContractAnnotation("=> false, target:null; => true, target:notnull")]
@@ -77,25 +98,9 @@ namespace ExcelSerialPortListener {
                     return true;
                 }
             }
+
             target = null;
             return false;
-        }
-
-        internal bool TryWriteStringToWorksheet([NotNull] Excel.Workbook workBook, [NotNull] string valueToWrite) {
-            Requires.NotNullOrWhiteSpace(valueToWrite, nameof(valueToWrite));
-            Requires.NotNull(workBook, nameof(workBook));
-            Requires.NotNull(workBook.Worksheets, nameof(workBook.Worksheets));
-
-            try
-            {
-                var (_, workSheetName, rangeName) = cellLocation;
-                workBook.Worksheets[workSheetName].Range[rangeName].Value = valueToWrite;
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
         }
     }
 }

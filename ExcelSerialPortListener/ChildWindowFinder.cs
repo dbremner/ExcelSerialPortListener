@@ -8,20 +8,13 @@ using Validation;
 
 namespace ExcelSerialPortListener {
     internal sealed partial class ChildWindowFinder {
-        [NotNull] private readonly ChildWindowCallback callback;
+        [NotNull]
+        private readonly ChildWindowCallback callback;
 
         private ChildWindowFinder([NotNull] ChildWindowCallback callback) {
             Requires.NotNull(callback, nameof(callback));
 
             this.callback = callback;
-        }
-
-        public bool TryFindChildWindow(IntPtr mainWindow, out IntPtr childWindow) {
-            Requires.NotNull(mainWindow, nameof(mainWindow));
-
-            childWindow = IntPtr.Zero;
-            NativeMethods.EnumChildWindows(mainWindow, callback, ref childWindow);
-            return childWindow != IntPtr.Zero;
         }
 
         [NotNull]
@@ -30,6 +23,14 @@ namespace ExcelSerialPortListener {
 
             var searcher = new WindowClassSearcher(className);
             return new ChildWindowFinder(searcher.EnumChildProc);
+        }
+
+        public bool TryFindChildWindow(IntPtr mainWindow, out IntPtr childWindow) {
+            Requires.NotNull(mainWindow, nameof(mainWindow));
+
+            childWindow = IntPtr.Zero;
+            NativeMethods.EnumChildWindows(mainWindow, callback, ref childWindow);
+            return childWindow != IntPtr.Zero;
         }
     }
 }

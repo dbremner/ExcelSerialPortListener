@@ -6,8 +6,8 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace ExcelSerialPortListener {
     internal sealed partial class ExcelComms {
         private sealed partial class WindowFinder {
-            private Guid IID_IDispatch = new Guid(iidDispatchGuid);
-            private const string iidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
+            private const string IidDispatchGuid = "{00020400-0000-0000-C000-000000000046}";
+            private Guid IID_IDispatch = new Guid(IidDispatchGuid);
 
             [ContractAnnotation("=> false, ptr:null; => true, ptr:notnull")]
             public bool TryFindExcelWindow(IntPtr hwndChild, [CanBeNull] out Excel.Window ptr) {
