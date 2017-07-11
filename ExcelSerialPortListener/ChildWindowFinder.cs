@@ -10,7 +10,7 @@ namespace ExcelSerialPortListener {
     internal sealed partial class ChildWindowFinder {
         [NotNull] private readonly ChildWindowCallback callback;
 
-        public ChildWindowFinder([NotNull] ChildWindowCallback callback) {
+        private ChildWindowFinder([NotNull] ChildWindowCallback callback) {
             Requires.NotNull(callback, nameof(callback));
 
             this.callback = callback;

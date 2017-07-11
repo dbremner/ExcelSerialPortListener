@@ -9,7 +9,7 @@ using static ExcelSerialPortListener.Utilities;
 namespace ExcelSerialPortListener {
     internal static class Program {
         [NotNull]
-        public static string Response { get; set; } = string.Empty;
+        private static string Response { get; set; } = string.Empty;
         private static bool _gotResponse;
         private static CommChannel ScaleComms { get; } = new CommChannel(SetResponse);
 
