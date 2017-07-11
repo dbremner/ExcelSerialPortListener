@@ -9,9 +9,6 @@ namespace ExcelSerialPortListener {
     internal static class Program {
         private static bool gotResponse;
 
-        [NotNull]
-        private static string Response { get; set; } = string.Empty;
-
         [STAThread]
         private static void Main([NotNull] [ItemNotNull] string[] args) {
             if (args.Length != 3) {
@@ -25,14 +22,22 @@ namespace ExcelSerialPortListener {
 
             var cellLocation = new CellLocation(workBookName: args[0], workSheetName: args[1], rangeName: args[2]);
 
+            var scaleListener = new ScaleListener(() => gotResponse = true);
             var scaleComms = new CommChannel(SetResponse);
+
+            void SetResponse(string data) {
+                Requires.NotNull(data, nameof(data));
+
+                scaleListener.Response = data;
+                Console.WriteLine(Resources.ReceivedResponse0, scaleListener.Response);
+            }
+
             bool commsAreOpen = scaleComms.OpenPort();
             if (!commsAreOpen) {
                 FatalError(Resources.FailedToOpenSerialPortConnection);
             }
 
             var keyboardListener = new KeyboardListener(() => scaleComms.WriteData("P\r"));
-            var scaleListener = new ScaleListener(() => gotResponse = true);
 
             var mainThread = new Thread(() => scaleListener.ListenToScale());
             var consoleKeyListener = new Thread(keyboardListener.ListenerKeyBoardEvent);
@@ -54,18 +59,11 @@ namespace ExcelSerialPortListener {
                 FatalError(Resources.ExcelIsNotRunning);
             }
 
-            if (!excel.TryWriteStringToWorksheet(workBook, Response)) {
+            if (!excel.TryWriteStringToWorksheet(workBook, scaleListener.Response)) {
                 FatalError(Resources.FailedToWriteToSpreadsheet);
             }
 
             scaleComms.ClosePort();
-        }
-
-        private static void SetResponse([NotNull] string data) {
-            Requires.NotNull(data, nameof(data));
-
-            Response = data;
-            Console.WriteLine(Resources.ReceivedResponse0, Program.Response);
         }
     }
 }
