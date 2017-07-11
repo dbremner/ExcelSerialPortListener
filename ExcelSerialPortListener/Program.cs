@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using Validation;
 using static ExcelSerialPortListener.Utilities;
 
+// ReSharper disable HeapView.ClosureAllocation
 namespace ExcelSerialPortListener {
     internal static class Program {
         private static bool gotResponse;
