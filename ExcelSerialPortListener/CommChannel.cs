@@ -78,7 +78,7 @@ namespace ExcelSerialPortListener {
         internal void WriteData([NotNull] string dataString) {
             Requires.NotNull(dataString, nameof(dataString));
 
-            Console.WriteLine("got Print command.");
+            Console.WriteLine(Resources.GotPrintCommand);
             if (!IsOpen) {
                 commPort.Open();
             }

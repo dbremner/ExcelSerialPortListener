@@ -18,19 +18,19 @@ namespace ExcelSerialPortListener {
         [STAThread]
         private static void Main([NotNull] [ItemNotNull] string[] args) {
             if (args.Length != 3) {
-                FatalError("Expected 3 arguments: WorkbookName, WorkSheetName, Range");
+                FatalError(Resources.Expected3Arguments);
             }
 
             var instances = GetExcelInstances();
             if (instances.Count == 0) {
-                FatalError("Excel is not running, please open Excel with the appropriate spreadsheet.");
+                FatalError(Resources.ExcelIsNotRunningPleaseOpenExcel);
             }
 
             var cellLocation = new CellLocation(workBookName: args[0], workSheetName: args[1], rangeName: args[2]);
 
             bool commsAreOpen = ScaleComms.OpenPort();
             if (!commsAreOpen) {
-                FatalError("Failed to open serial port connection");
+                FatalError(Resources.FailedToOpenSerialPortConnection);
             }
 
             var mainThread = new Thread(() => ListenToScale());
@@ -50,11 +50,11 @@ namespace ExcelSerialPortListener {
             var excel = new ExcelComms(cellLocation);
 
             if (!excel.TryFindWorkbookByName(out var workBook)) {
-                FatalError("Excel is not running or requested spreadsheet is not open, exiting now");
+                FatalError(Resources.ExcelIsNotRunning);
             }
 
             if (!excel.TryWriteStringToWorksheet(workBook, Response)) {
-                FatalError("Failed to write to spreadsheet");
+                FatalError(Resources.FailedToWriteToSpreadsheet);
             }
 
             ScaleComms.ClosePort();
@@ -65,7 +65,7 @@ namespace ExcelSerialPortListener {
 
             while (true) {
                 if (Console.ReadKey(true).Key == ConsoleKey.Spacebar) {
-                    Console.WriteLine("Saw pressed key!");
+                    Console.WriteLine(Resources.SawPressedKey);
                     ScaleComms.WriteData("P\r");
                 }
             }
@@ -85,7 +85,7 @@ namespace ExcelSerialPortListener {
                 isTimedOut = DateTime.Now > timeOut;
             } while (!isTimedOut);
 
-            Response = isTimedOut ? "Timed Out" : OnlyDigits(Response);
+            Response = isTimedOut ? Resources.TimedOut : OnlyDigits(Response);
             gotResponse = true;
         }
 
@@ -106,7 +106,7 @@ namespace ExcelSerialPortListener {
             Requires.NotNull(data, nameof(data));
 
             Response = data;
-            Console.WriteLine("Received Response: {0}", Program.Response);
+            Console.WriteLine(Resources.ReceivedResponse0, Program.Response);
         }
     }
 }
