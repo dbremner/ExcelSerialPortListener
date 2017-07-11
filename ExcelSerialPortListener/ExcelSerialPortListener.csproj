@@ -171,6 +171,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ScaleListener.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

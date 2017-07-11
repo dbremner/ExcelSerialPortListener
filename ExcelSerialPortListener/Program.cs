@@ -4,7 +4,6 @@ using System.Threading;
 using JetBrains.Annotations;
 using Validation;
 using static ExcelSerialPortListener.Utilities;
-using static System.StringComparison;
 
 namespace ExcelSerialPortListener {
     internal static class Program {
@@ -33,8 +32,9 @@ namespace ExcelSerialPortListener {
             }
 
             var keyboardListener = new KeyboardListener(() => scaleComms.WriteData("P\r"));
+            var scaleListener = new ScaleListener(() => gotResponse = true);
 
-            var mainThread = new Thread(() => ListenToScale());
+            var mainThread = new Thread(() => scaleListener.ListenToScale());
             var consoleKeyListener = new Thread(keyboardListener.ListenerKeyBoardEvent);
 
             consoleKeyListener.Start();
@@ -59,37 +59,6 @@ namespace ExcelSerialPortListener {
             }
 
             scaleComms.ClosePort();
-        }
-
-        private static void ListenToScale(double timeOutInSeconds = 30) {
-            Requires.NotNull(Response, nameof(Response));
-
-            var timeOut = DateTime.Now.AddSeconds(timeOutInSeconds);
-            var isTimedOut = false;
-            do {
-                if (Response.Length > 0) {
-                    break;
-                }
-
-                Thread.Sleep(200);
-                isTimedOut = DateTime.Now > timeOut;
-            } while (!isTimedOut);
-
-            Response = isTimedOut ? Resources.TimedOut : OnlyDigits(Response);
-            gotResponse = true;
-        }
-
-        [Pure]
-        private static string OnlyDigits([NotNull] string s) {
-            Requires.NotNull(s, nameof(s));
-
-            var onlyDigits = s.Trim();
-            var indexOfSpaceG = onlyDigits.IndexOf(" g", Ordinal);
-            if (indexOfSpaceG > 0) {
-                onlyDigits = onlyDigits.Substring(0, indexOfSpaceG);
-            }
-
-            return double.TryParse(onlyDigits, out _) ? onlyDigits : string.Empty;
         }
 
         private static void SetResponse([NotNull] string data) {
