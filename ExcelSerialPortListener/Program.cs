@@ -13,6 +13,7 @@ namespace ExcelSerialPortListener {
         [NotNull]
         private static string Response { get; set; } = string.Empty;
 
+        [NotNull]
         private static CommChannel ScaleComms { get; } = new CommChannel(SetResponse);
 
         [STAThread]
