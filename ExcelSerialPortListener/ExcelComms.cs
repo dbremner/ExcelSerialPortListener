@@ -18,12 +18,6 @@ namespace ExcelSerialPortListener {
 
         [NotNull] private readonly CellLocation cellLocation;
 
-        [NotNull]
-        private string WorkSheetName => cellLocation.WorkSheetName;
-
-        [NotNull]
-        private string RangeName => cellLocation.RangeName;
-
         public ExcelComms([NotNull] CellLocation cellLocation) {
             Requires.NotNull(cellLocation, nameof(cellLocation));
 
@@ -94,7 +88,8 @@ namespace ExcelSerialPortListener {
 
             try
             {
-                workBook.Worksheets[WorkSheetName].Range[RangeName].Value = valueToWrite;
+                var (_, workSheetName, rangeName) = cellLocation;
+                workBook.Worksheets[workSheetName].Range[rangeName].Value = valueToWrite;
                 return true;
             }
             catch (Exception)

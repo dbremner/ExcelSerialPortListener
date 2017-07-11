@@ -20,5 +20,12 @@ namespace ExcelSerialPortListener {
             this.WorkSheetName = workSheetName;
             this.RangeName = rangeName;
         }
+
+        public void Deconstruct(
+            [NotNull] out string workBookName,
+            [NotNull] out string workSheetName,
+            [NotNull] out string rangeName) {
+            (workBookName, workSheetName, rangeName) = (WorkBookName, WorkSheetName, RangeName);
+        }
     }
 }
