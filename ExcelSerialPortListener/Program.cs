@@ -13,9 +13,6 @@ namespace ExcelSerialPortListener {
         [NotNull]
         private static string Response { get; set; } = string.Empty;
 
-        [NotNull]
-        private static CommChannel ScaleComms { get; } = new CommChannel(SetResponse);
-
         [STAThread]
         private static void Main([NotNull] [ItemNotNull] string[] args) {
             if (args.Length != 3) {
@@ -29,6 +26,7 @@ namespace ExcelSerialPortListener {
 
             var cellLocation = new CellLocation(workBookName: args[0], workSheetName: args[1], rangeName: args[2]);
 
+            var ScaleComms = new CommChannel(SetResponse);
             bool commsAreOpen = ScaleComms.OpenPort();
             if (!commsAreOpen) {
                 FatalError(Resources.FailedToOpenSerialPortConnection);
