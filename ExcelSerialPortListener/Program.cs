@@ -26,13 +26,13 @@ namespace ExcelSerialPortListener {
 
             var cellLocation = new CellLocation(workBookName: args[0], workSheetName: args[1], rangeName: args[2]);
 
-            var ScaleComms = new CommChannel(SetResponse);
-            bool commsAreOpen = ScaleComms.OpenPort();
+            var scaleComms = new CommChannel(SetResponse);
+            bool commsAreOpen = scaleComms.OpenPort();
             if (!commsAreOpen) {
                 FatalError(Resources.FailedToOpenSerialPortConnection);
             }
 
-            var keyboardListener = new KeyboardListener(() => ScaleComms.WriteData("P\r"));
+            var keyboardListener = new KeyboardListener(() => scaleComms.WriteData("P\r"));
 
             var mainThread = new Thread(() => ListenToScale());
             var consoleKeyListener = new Thread(keyboardListener.ListenerKeyBoardEvent);
@@ -58,7 +58,7 @@ namespace ExcelSerialPortListener {
                 FatalError(Resources.FailedToWriteToSpreadsheet);
             }
 
-            ScaleComms.ClosePort();
+            scaleComms.ClosePort();
         }
 
         private static void ListenToScale(double timeOutInSeconds = 30) {
