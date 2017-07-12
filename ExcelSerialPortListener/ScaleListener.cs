@@ -8,31 +8,25 @@ using JetBrains.Annotations;
 using Validation;
 using static System.StringComparison;
 
-namespace ExcelSerialPortListener
-{
-    internal sealed class ScaleListener : IScaleListener
-    {
+namespace ExcelSerialPortListener {
+    internal sealed class ScaleListener : IScaleListener {
         [NotNull]
         private readonly Action action;
 
-        public ScaleListener([NotNull] Action action)
-        {
+        public ScaleListener([NotNull] Action action) {
             this.action = action;
         }
 
         [NotNull]
         public string Response { get; set; } = string.Empty;
 
-        public void ListenToScale(double timeOutInSeconds = 30)
-        {
+        public void ListenToScale(double timeOutInSeconds = 30) {
             Requires.NotNull(Response, nameof(Response));
 
             var timeOut = DateTime.Now.AddSeconds(timeOutInSeconds);
             var isTimedOut = false;
-            do
-            {
-                if (Response.Length > 0)
-                {
+            do {
+                if (Response.Length > 0) {
                     break;
                 }
 
@@ -45,14 +39,12 @@ namespace ExcelSerialPortListener
         }
 
         [Pure]
-        private static string OnlyDigits([NotNull] string s)
-        {
+        private static string OnlyDigits([NotNull] string s) {
             Requires.NotNull(s, nameof(s));
 
             var onlyDigits = s.Trim();
             var indexOfSpaceG = onlyDigits.IndexOf(" g", Ordinal);
-            if (indexOfSpaceG > 0)
-            {
+            if (indexOfSpaceG > 0) {
                 onlyDigits = onlyDigits.Substring(0, indexOfSpaceG);
             }
 

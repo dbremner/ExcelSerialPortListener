@@ -76,14 +76,12 @@ namespace ExcelSerialPortListener {
             Requires.NotNull(workBook, nameof(workBook));
             Requires.NotNull(workBook.Worksheets, nameof(workBook.Worksheets));
 
-            try
-            {
+            try {
                 var(_, workSheetName, rangeName) = cellLocation;
                 workBook.Worksheets[workSheetName].Range[rangeName].Value = valueToWrite;
                 return true;
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 return false;
             }
         }
