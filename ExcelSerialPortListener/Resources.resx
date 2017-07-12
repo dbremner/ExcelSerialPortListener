@@ -144,4 +144,7 @@
   <data name="GotPrintCommand" xml:space="preserve">
     <value>got Print command.</value>
   </data>
+  <data name="ErrorCaption" xml:space="preserve">
+    <value>ExcelSerialPortListener</value>
+  </data>
 </root>

@@ -61,6 +61,15 @@ namespace ExcelSerialPortListener {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ExcelSerialPortListener.
+        /// </summary>
+        internal static string ErrorCaption {
+            get {
+                return ResourceManager.GetString("ErrorCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Excel is not running or requested spreadsheet is not open, exiting now.
         /// </summary>
         internal static string ExcelIsNotRunning {

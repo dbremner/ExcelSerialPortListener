@@ -22,7 +22,7 @@ namespace ExcelSerialPortListener {
         internal static void FatalError([NotNull] [LocalizationRequired] string message) {
             Requires.NotNullOrWhiteSpace(message, nameof(message));
 
-            MessageBox.Show(message, nameof(ExcelSerialPortListener), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(message, Resources.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
             Environment.Exit(1);
         }
     }
