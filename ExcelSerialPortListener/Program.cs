@@ -37,8 +37,7 @@ namespace ExcelSerialPortListener {
                 Console.WriteLine(Resources.ReceivedResponse0, scaleListener.Response);
             }
 
-            bool commsAreOpen = scaleComms.OpenPort();
-            if (!commsAreOpen) {
+            if (!scaleComms.OpenPort()) {
                 FatalError(Resources.FailedToOpenSerialPortConnection);
             }
 
