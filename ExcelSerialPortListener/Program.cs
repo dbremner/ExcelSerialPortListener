@@ -23,8 +23,8 @@ namespace ExcelSerialPortListener {
 
             var cellLocation = new CellLocation(workBookName: args[0], workSheetName: args[1], rangeName: args[2]);
 
-            var scaleListener = new ScaleListener(() => gotResponse = true);
-            var scaleComms = new CommChannel(SetResponse);
+            IScaleListener scaleListener = new ScaleListener(() => gotResponse = true);
+            ICommChannel scaleComms = new CommChannel(SetResponse);
 
             void SetResponse(string data) {
                 Requires.NotNull(data, nameof(data));
@@ -38,7 +38,7 @@ namespace ExcelSerialPortListener {
                 FatalError(Resources.FailedToOpenSerialPortConnection);
             }
 
-            var keyboardListener = new KeyboardListener(() => scaleComms.WriteData("P\r"));
+            IKeyboardListener keyboardListener = new KeyboardListener(() => scaleComms.WriteData("P\r"));
 
             var mainThread = new Thread(() => scaleListener.ListenToScale());
             var consoleKeyListener = new Thread(keyboardListener.ListenerKeyBoardEvent);
@@ -54,7 +54,7 @@ namespace ExcelSerialPortListener {
                 }
             }
 
-            var excel = new ExcelComms(cellLocation);
+            IExcelComms excel = new ExcelComms(cellLocation);
 
             if (!excel.TryFindWorkbookByName(out var workBook)) {
                 FatalError(Resources.ExcelIsNotRunning);

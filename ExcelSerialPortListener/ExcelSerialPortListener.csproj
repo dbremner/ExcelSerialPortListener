@@ -158,6 +158,10 @@
     <Compile Include="ExcelComms.cs" />
     <Compile Include="ExcelComms.WindowFinder.NativeMethods.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="ICommChannel.cs" />
+    <Compile Include="IExcelComms.cs" />
+    <Compile Include="IKeyboardListener.cs" />
+    <Compile Include="IScaleListener.cs" />
     <Compile Include="KeyboardListener.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

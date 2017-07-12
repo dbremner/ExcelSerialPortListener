@@ -8,7 +8,7 @@ using Validation;
 
 namespace ExcelSerialPortListener
 {
-    internal sealed class KeyboardListener
+    internal sealed class KeyboardListener : IKeyboardListener
     {
         [NotNull]
         private readonly Action action;
@@ -19,7 +19,7 @@ namespace ExcelSerialPortListener
             this.action = action;
         }
 
-        internal void ListenerKeyBoardEvent()
+        public void ListenerKeyBoardEvent()
         {
             while (true)
             {

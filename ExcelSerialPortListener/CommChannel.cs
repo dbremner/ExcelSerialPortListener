@@ -8,7 +8,7 @@ using Validation;
 
 // ReSharper disable HeapView.ClosureAllocation
 namespace ExcelSerialPortListener {
-    internal sealed class CommChannel : IDisposable {
+    internal sealed class CommChannel : ICommChannel {
         [NotNull]
         private readonly SerialPort commPort = new SerialPort {
             PortName = Settings.Default.PortName,
@@ -40,13 +40,13 @@ namespace ExcelSerialPortListener {
             commPort.Dispose();
         }
 
-        internal void ClosePort() {
+        public void ClosePort() {
             if (IsOpen) {
                 commPort.Close();
             }
         }
 
-        internal bool OpenPort() {
+        public bool OpenPort() {
             bool result = true;
             void HandleException() => result = false;
             try {
@@ -75,7 +75,7 @@ namespace ExcelSerialPortListener {
             return result;
         }
 
-        internal void WriteData([NotNull] string dataString) {
+        public void WriteData(string dataString) {
             Requires.NotNull(dataString, nameof(dataString));
 
             Console.WriteLine(Resources.GotPrintCommand);

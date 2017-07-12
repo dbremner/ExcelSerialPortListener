@@ -10,7 +10,7 @@ using static System.StringComparison;
 
 namespace ExcelSerialPortListener
 {
-    internal sealed class ScaleListener
+    internal sealed class ScaleListener : IScaleListener
     {
         [NotNull]
         private readonly Action action;

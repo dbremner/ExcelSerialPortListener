@@ -9,7 +9,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 // ReSharper disable HeapView.ObjectAllocation.Possible
 namespace ExcelSerialPortListener {
-    internal sealed partial class ExcelComms {
+    internal sealed partial class ExcelComms : IExcelComms {
         [NotNull]
         private readonly ChildWindowFinder childWindowFinder = ChildWindowFinder.FindWindowClass("EXCEL7");
 
@@ -35,7 +35,7 @@ namespace ExcelSerialPortListener {
         /// <param name="target">matching workbook or null</param>
         /// <returns>Excel.Workbook</returns>
         [ContractAnnotation("=> false, target:null; => true, target:notnull")]
-        public bool TryFindWorkbookByName([CanBeNull] out Excel.Workbook target) {
+        public bool TryFindWorkbookByName(out Excel.Workbook target) {
             var excelInstances = GetExcelInstances();
             if (excelInstances.Count == 0) {
                 target = null;
@@ -71,7 +71,7 @@ namespace ExcelSerialPortListener {
             return false;
         }
 
-        internal bool TryWriteStringToWorksheet([NotNull] Excel.Workbook workBook, [NotNull] string valueToWrite) {
+        public bool TryWriteStringToWorksheet(Excel.Workbook workBook, string valueToWrite) {
             Requires.NotNullOrWhiteSpace(valueToWrite, nameof(valueToWrite));
             Requires.NotNull(workBook, nameof(workBook));
             Requires.NotNull(workBook.Worksheets, nameof(workBook.Worksheets));
