@@ -23,7 +23,11 @@ namespace ExcelSerialPortListener {
 
             var cellLocation = new CellLocation(workBookName: args[0], workSheetName: args[1], rangeName: args[2]);
 
-            IScaleListener scaleListener = new ScaleListener(() => _ = Interlocked.Exchange(ref gotResponse, 1));
+            void GotResponse() {
+                _ = Interlocked.Exchange(ref gotResponse, 1);
+            }
+
+            IScaleListener scaleListener = new ScaleListener(GotResponse);
             ICommChannel scaleComms = new CommChannel(SetResponse);
 
             void SetResponse(string data) {
@@ -38,9 +42,17 @@ namespace ExcelSerialPortListener {
                 FatalError(Resources.FailedToOpenSerialPortConnection);
             }
 
-            IKeyboardListener keyboardListener = new KeyboardListener(() => scaleComms.WriteData("P\r"));
+            void OnKeyPressed() {
+                scaleComms.WriteData("P\r");
+            }
 
-            var mainThread = new Thread(() => scaleListener.ListenToScale());
+            IKeyboardListener keyboardListener = new KeyboardListener(OnKeyPressed);
+
+            void ListenToScale() {
+                scaleListener.ListenToScale();
+            }
+
+            var mainThread = new Thread(ListenToScale);
             var consoleKeyListener = new Thread(keyboardListener.ListenerKeyBoardEvent);
 
             consoleKeyListener.Start();
