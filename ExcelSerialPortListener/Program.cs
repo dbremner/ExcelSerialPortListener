@@ -28,7 +28,6 @@ namespace ExcelSerialPortListener {
             }
 
             IScaleListener scaleListener = new ScaleListener(GotResponse);
-            ICommChannel scaleComms = new CommChannel(SetResponse);
 
             void SetResponse(string data) {
                 Requires.NotNull(data, nameof(data));
@@ -36,6 +35,8 @@ namespace ExcelSerialPortListener {
                 scaleListener.Response = data;
                 Console.WriteLine(Resources.ReceivedResponse0, scaleListener.Response);
             }
+
+            ICommChannel scaleComms = new CommChannel(SetResponse);
 
             if (!scaleComms.OpenPort()) {
                 FatalError(Resources.FailedToOpenSerialPortConnection);
