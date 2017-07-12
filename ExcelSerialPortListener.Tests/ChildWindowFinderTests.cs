@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ExcelSerialPortListener;
+using JetBrains.Annotations;
 using Xunit;
 
 namespace ExcelSerialPortListener.Tests
 {
     public sealed class ChildWindowFinderTests {
+        [NotNull]
         private readonly ChildWindowFinder finder;
 
         /// <summary>
@@ -31,12 +33,13 @@ namespace ExcelSerialPortListener.Tests
             Assert.False(HasChildWindow("xyzzy"));
         }
 
-        private static IEnumerable<IntPtr> GetMainWindowHandles(string processName) {
+        [NotNull]
+        private static IEnumerable<IntPtr> GetMainWindowHandles([NotNull] string processName) {
             var processes = Process.GetProcessesByName(processName);
             return processes.Select(instance => instance.MainWindowHandle);
         }
 
-        private bool HasChildWindow(string processName) {
+        private bool HasChildWindow([NotNull] string processName) {
             var mainWindows = GetMainWindowHandles(processName);
             return mainWindows.Any(mainWindow => finder.TryFindChildWindow(mainWindow, out _));
         }
