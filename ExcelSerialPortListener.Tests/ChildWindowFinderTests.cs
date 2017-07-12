@@ -19,33 +19,22 @@ namespace ExcelSerialPortListener.Tests
 
         [Fact]
         public void FindChildWindow() {
-            var explorers = Process.GetProcessesByName("explorer");
-            var mainWindows = explorers.Select(instance => instance.MainWindowHandle);
-            bool succeeded = false;
-            foreach (var mainWindow in mainWindows) {
-                if (finder.TryFindChildWindow(mainWindow, out _)) {
-                    succeeded = true;
-                    break;
-                }
-            }
-            Assert.True(succeeded);
+            Assert.True(HasChildWindow("explorer"));
         }
 
         [Fact]
         public void FindChildWindowFails() {
-            var explorers = Process.GetProcessesByName("xyzzy");
-            var mainWindows = explorers.Select(instance => instance.MainWindowHandle);
-            bool succeeded = false;
-            foreach (var mainWindow in mainWindows)
-            {
-                if (finder.TryFindChildWindow(mainWindow, out _))
-                {
-                    succeeded = true;
-                    break;
-                }
-            }
-            Assert.False(succeeded);
+            Assert.False(HasChildWindow("xyzzy"));
         }
 
+        private static IEnumerable<IntPtr> GetMainWindowHandles(string processName) {
+            var processes = Process.GetProcessesByName(processName);
+            return processes.Select(instance => instance.MainWindowHandle);
+        }
+
+        private bool HasChildWindow(string processName) {
+            var mainWindows = GetMainWindowHandles(processName);
+            return mainWindows.Any(mainWindow => finder.TryFindChildWindow(mainWindow, out _));
+        }
     }
 }
