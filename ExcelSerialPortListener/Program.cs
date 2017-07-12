@@ -44,6 +44,7 @@ namespace ExcelSerialPortListener {
 
             void OnKeyPressed() {
                 const string printCommand = "P\r";
+                Console.WriteLine(Resources.GotPrintCommand);
                 scaleComms.WriteData(printCommand);
             }
 
