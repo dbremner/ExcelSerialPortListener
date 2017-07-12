@@ -8,7 +8,7 @@ using static ExcelSerialPortListener.Utilities;
 // ReSharper disable HeapView.ClosureAllocation
 namespace ExcelSerialPortListener {
     internal static class Program {
-        private static bool gotResponse;
+        private static int gotResponse;
 
         [STAThread]
         private static void Main([NotNull] [ItemNotNull] string[] args) {
@@ -23,7 +23,7 @@ namespace ExcelSerialPortListener {
 
             var cellLocation = new CellLocation(workBookName: args[0], workSheetName: args[1], rangeName: args[2]);
 
-            IScaleListener scaleListener = new ScaleListener(() => gotResponse = true);
+            IScaleListener scaleListener = new ScaleListener(() => _ = Interlocked.Exchange(ref gotResponse, 1));
             ICommChannel scaleComms = new CommChannel(SetResponse);
 
             void SetResponse(string data) {
@@ -47,7 +47,7 @@ namespace ExcelSerialPortListener {
             mainThread.Start();
 
             while (true) {
-                if (gotResponse) {
+                if (gotResponse == 1) {
                     mainThread.Abort();
                     consoleKeyListener.Abort();
                     break;
