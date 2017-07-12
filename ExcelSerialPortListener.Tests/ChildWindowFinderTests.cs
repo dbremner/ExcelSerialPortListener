@@ -12,8 +12,12 @@ namespace ExcelSerialPortListener.Tests
     public sealed class ChildWindowFinderTests {
         private readonly ChildWindowFinder finder;
 
+        /// <summary>
+        /// This is the window class for Explorer's notification area.
+        /// </summary>
+        private const string windowClass = "TrayNotifyWnd";
+
         public ChildWindowFinderTests() {
-            const string windowClass = "TrayNotifyWnd";
             finder = ChildWindowFinder.FindWindowClass(windowClass);
         }
 
