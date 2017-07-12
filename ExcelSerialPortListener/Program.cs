@@ -43,7 +43,8 @@ namespace ExcelSerialPortListener {
             }
 
             void OnKeyPressed() {
-                scaleComms.WriteData("P\r");
+                const string printCommand = "P\r";
+                scaleComms.WriteData(printCommand);
             }
 
             IKeyboardListener keyboardListener = new KeyboardListener(OnKeyPressed);
